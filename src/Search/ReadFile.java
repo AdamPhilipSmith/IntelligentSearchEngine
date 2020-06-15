@@ -34,15 +34,17 @@ public class ReadFile {
                 if (word.startsWith("*PAGE:")) { //checks if the word is a URL. If so, sets the URL and continues on to the next word
 
                     Url = word.substring(6);
+                    String[] _arr = Url.split("\\s"); // Removes the occasional time a website still has extra text after its URL for some reason.
+                    Url = _arr[0];
                     continue;
                 }
 
-                if (Url == null) { // keeps going until we find the first RUL so we don't add words without a corresponding Url.
+                if (Url == null) { // keeps going until we find the first Url so we don't add words without a corresponding Url.
 
                     continue;
                 }
 
-                addEntryToHashMap(results, word, Url);
+                addEntryToHashMap(results, word, Url); //adds the word to the Hasmap with the corresponding Url.
 
             }
             file.close();

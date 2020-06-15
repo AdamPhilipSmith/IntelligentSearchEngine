@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 public class Search {
+    //TODO might need this here: private Searcher() {}
 
-    //private Searcher() {}
 
     public static HashSet<String> Search(String query, LinkedHashMap hashMap){
 

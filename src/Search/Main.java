@@ -5,13 +5,15 @@ import java.util.HashSet;
 
 import static Search.ReadFile.results;
 import static Search.Search.Search;
-import static javax.swing.UIManager.get;
 
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        ReadFile test = new ReadFile("itcwww-small.txt");
-        HashSet results2 = Search("research", results);
+
+        //Crawler crawler = new Crawler("https://www.mmu.ac.uk/", 1000);
+        //crawler.crawl();
+        ReadFile test = new ReadFile("mmuSiteTest1000.txt");
+        HashSet results2 = Search("Adam", results);
 
         System.out.println(results2);
 
