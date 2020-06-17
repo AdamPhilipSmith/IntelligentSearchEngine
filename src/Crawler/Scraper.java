@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-
+//TODO SOrt code
 public class Scraper {
 
     public List<String> links = new LinkedList<String>(); // list of URLs

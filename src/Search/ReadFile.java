@@ -11,8 +11,8 @@ import java.util.LinkedHashMap;
 
 public class ReadFile {
 
-    public static LinkedHashMap results = new LinkedHashMap<String, HashSet>();
-    public static HashMap sitesAndWords = new HashMap<String, ArrayList>();
+    public static LinkedHashMap wordsToSites = new LinkedHashMap<String, HashSet>();
+    public static HashMap sitesToWords = new HashMap<String, ArrayList<String>>();
     public static LinkedHashMap wordResults = new LinkedHashMap<String, HashSet>();
 
 
@@ -59,7 +59,7 @@ public class ReadFile {
 
                 //}
                 //System.out.println(words);
-                addEntryToHashMap(results, word, Url); //adds the word to the Hashmap with the corresponding Url.
+                addEntryToHashMap(wordsToSites, word, Url); //adds the word to the Hashmap with the corresponding Url.
                 addToSiteAndWords(Url, word);
             }
             file.close();
@@ -109,7 +109,7 @@ public class ReadFile {
 
 
         ArrayList temp = new ArrayList();
-        temp = (ArrayList) sitesAndWords.get(url);
+        temp = (ArrayList) sitesToWords.get(url);
 
         if (temp!=null) {
             temp.add(word);
@@ -121,11 +121,11 @@ public class ReadFile {
             ArrayList temp2 = new ArrayList();
             temp2.add(word);
             temp = temp2;
-            sitesAndWords.put(url, temp2);
+            sitesToWords.put(url, temp2);
 
         }
 
-        sitesAndWords.put(url, temp);
+        sitesToWords.put(url, temp);
         //System.out.println(sitesAndWords);
         //System.out.println("/////////////////////////////////////////");
 

@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 public class Search {
     //TODO might need this here: private Searcher() {}
 
+    //TODO fix all code on this page
+
 
     public static HashSet<String> Search(String query, LinkedHashMap hashMap){
 
@@ -24,9 +26,11 @@ public class Search {
             HashSet<String> resultsTwo = (HashSet) hashMap.get(parts[2]);
             HashSet<String> tmpResultsTwo = (HashSet<String>) resultsTwo.clone();
 
-            // TODO if (parts[1].equals("OR")) return Searcher.handleOrSearch(tmpResultsOne, tmpResultsTwo);
+            if (parts[1].equals("OR")) return Search.handleOrSearch(tmpResultsOne, tmpResultsTwo);
 
-            // TODO if (parts[1].equals("AND")) return Searcher.handleAndSearch(tmpResultsOne, tmpResultsTwo);
+            if (parts[1].equals("AND")) return Search.handleAndSearch(tmpResultsOne, tmpResultsTwo);
+
+            // TODO need to try and get rid of case sensitivity.
         }
         return null;
     }
@@ -35,4 +39,31 @@ public class Search {
         return (HashSet) hashMap.get(query);
     }
 
+    private static HashSet<String> handleOrSearch (HashSet<String> resultOne, HashSet<String> resultTwo) {
+
+        if (resultOne == null && resultTwo == null) return null;
+
+        if (resultOne == null) return resultTwo;
+
+        if (resultTwo == null) return resultOne;
+
+
+        resultOne.addAll(resultTwo);
+        return resultOne;
+    }
+
+    /**
+     * Performs the AND search on two words.
+     * @return
+     */
+    private static HashSet<String> handleAndSearch (HashSet<String> resultOne, HashSet<String> resultTwo) {
+
+        if (resultOne == null || resultTwo == null) return null;
+
+        resultOne.retainAll(resultTwo);
+
+        return resultOne;
+    }
 }
+
+
