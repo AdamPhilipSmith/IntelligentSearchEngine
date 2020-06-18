@@ -51,18 +51,18 @@ public class Ranker {
 
     }
 
-    public static void displayResults(HashSet searchResults, String searchedWords){
+    public static void displayResults(HashSet searchResults, String searchedWords) {
 
         //String[] splitWord = searchedWords.split(" "); // Separates the different words from the search term
         //String word1 = splitWord[0];
         //String word2 = splitWord[2];
         TreeMap<Double, String> rankedURLs = new TreeMap<>(); //Tree map used since it will automatically sort the results by the key
 
-        for(Object url : searchResults){
+        for (Object url : searchResults) {
             List<String> words2 = (List<String>) sitesToWords.get(url);
             double rank = tfIdf(words2, sitesToWords, searchedWords);
             String stringURL = url.toString();
-            rankedURLs.put(rank,stringURL);
+            rankedURLs.put(rank, stringURL);
 
 
             //System.out.println(words2.size());
@@ -72,11 +72,18 @@ public class Ranker {
             //System.out.print("Rank:");
 
 
-           // System.out.println("");
+            // System.out.println("");
         }
         Map<Double, String> sortedURLs = rankedURLs.descendingMap(); //Since the results are ordered lowest to highest, it needs to be reversed to get the best results at the top
         System.out.println(sortedURLs);
-    }
+        Iterator it = sortedURLs.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            System.out.println(pair.getValue());
+
+            //leave below for now but it isn't used
+            //List<Double> URL = (List<Double>) pair.getKey();
+        }
 
     /*public class reverseRank implements Comparator<String>{
 
@@ -86,4 +93,5 @@ public class Ranker {
         }
 
     }*/
+    }
 }

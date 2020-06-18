@@ -43,7 +43,7 @@ public class Main {
         //System.out.println(tester);
         ReadFile test = new ReadFile("mmuSiteTest1000.txt");//Reads the mmu website, putting the info into of an Index of words to websites and another index linking websites to words
 
-        String searchedWord = "fire";
+        String searchedWord = "Manchester";
 
         HashSet searchResults = Search(searchedWord, wordsToSites);// Gets a list of sites containing the search term, indexed by word.
 
