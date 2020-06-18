@@ -31,6 +31,8 @@ public class Search {
             if (parts[1].equals("AND")) return Search.handleAndSearch(tmpResultsOne, tmpResultsTwo);
 
             // TODO need to try and get rid of case sensitivity.
+
+            //TODO need to handle more than 2 words
         }
         return null;
     }

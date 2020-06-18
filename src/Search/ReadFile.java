@@ -11,9 +11,9 @@ import java.util.LinkedHashMap;
 
 public class ReadFile {
 
-    public static LinkedHashMap wordsToSites = new LinkedHashMap<String, HashSet>();
-    public static HashMap sitesToWords = new HashMap<String, ArrayList<String>>();
-    public static LinkedHashMap wordResults = new LinkedHashMap<String, HashSet>();
+    public static LinkedHashMap wordsToSites = new LinkedHashMap<String, HashSet>();//Used Hashset since I don't want duplicates
+    public static HashMap sitesToWords = new HashMap<String, ArrayList<String>>(); //Used ArrayList since I do want duplicates
+
 
 
     public ReadFile(String filename) throws IOException {

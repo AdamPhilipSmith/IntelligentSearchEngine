@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import static Search.ReadFile.sitesToWords;
 import static Search.ReadFile.wordsToSites;
 import static Search.Search.Search;
 
@@ -44,11 +43,11 @@ public class Main {
         //System.out.println(tester);
         ReadFile test = new ReadFile("mmuSiteTest1000.txt");//Reads the mmu website, putting the info into of an Index of words to websites and another index linking websites to words
 
-        String searchedWord = "Manchester";
+        String searchedWord = "fire";
 
         HashSet searchResults = Search(searchedWord, wordsToSites);// Gets a list of sites containing the search term, indexed by word.
 
-        List<String> words = (List<String>) sitesToWords.get("https://www.mmu.ac.uk/international/fees-and-funding");
+        //List<String> words = (List<String>) sitesToWords.get("https://www.mmu.ac.uk/international/fees-and-funding");
 
         Ranker.displayResults(searchResults, searchedWord);
 
