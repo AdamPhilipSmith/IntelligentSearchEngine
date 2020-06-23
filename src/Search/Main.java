@@ -37,13 +37,13 @@ public class Main {
         //System.out.println(tester);
         ReadFile test = new ReadFile("mmuSiteTest1000.txt");//Reads the mmu website, putting the info into of an Index of words linking to websites and another index linking websites to words
 
-        String searchedWord = "French second seminar which chapter.";
+        String searchedWord = "French those are and this";
 
         HashSet searchResults = Search(searchedWord, wordsToSites);// Gets a list of sites containing the search term, indexed by word.
 
         //List<String> words = (List<String>) sitesToWords.get("https://www.mmu.ac.uk/cell/news-and-events/story/index.php?id=12399");
 
-        //Ranker.displayRankedResults(searchResults, searchedWord);
+        Ranker.displayRankedResults(searchResults, searchedWord);
 
         //System.out.println(words);
         System.out.println(searchResults);

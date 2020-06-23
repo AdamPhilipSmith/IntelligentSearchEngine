@@ -11,13 +11,17 @@ public class Search {
 
     public static HashSet<String> Search(String query, LinkedHashMap hashMap){
 
-        String[] parts = query.split(" ");
+        String queryUpperCase = query.toUpperCase();// coverts word to all lower case (means when searching all words will be picked up regardless of case)
 
-        if (query.length() == 0) return null;
+        String[] parts = queryUpperCase.split(" ");
+
+        if (queryUpperCase.length() == 0) return null;
 
         if (parts.length == 1) return handleSimpleSearch(hashMap, parts[0]);
 
-        if (parts.length == 3)
+
+
+        /*if (parts.length == 3)
         {
             // To future proof the code, we are cloning both queries in order to match how people would intuitively use this function.
             // Cloning is needed, because retainAll modifies the HashSet in the HashMap.
@@ -30,13 +34,13 @@ public class Search {
 
             if (parts[1].equals("AND")) return Search.handleAndSearch(tmpResultsOne, tmpResultsTwo);
 
-            // TODO need to try and get rid of case sensitivity.
 
-            //TODO need to handle more than 2 words
-        }
 
-        if (parts.length >= 4){
-            System.out.println("test");
+
+        }*/
+
+        if (parts.length > 1){
+            //System.out.println("test");
             return Search.handleMultipleWords(parts, hashMap);
         }
         return null;
@@ -84,7 +88,8 @@ public class Search {
 
             //System.out.println(initialResults);
             HashSet<String> nextWordResults = (HashSet) hashMap.get(parts[i]);
-            System.out.println(i);
+            //System.out.println(i);
+            System.out.println(parts[i]+ ":");
             System.out.println(nextWordResults);
 
             if (nextWordResults == null) return null;

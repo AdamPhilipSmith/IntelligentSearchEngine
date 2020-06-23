@@ -25,14 +25,17 @@ public class ReadFile {
 
             while (true) {
                 String word = file.readLine(); //reads the word
-                //System.out.println(word);
+
+
 
                 if (word == null) { //checks for the end of the file
 
                     break;
 
                 }
+                //System.out.println(word);
 
+                //System.out.println(wordUpper);
                 if (word.startsWith("*PAGE:")) { //checks if the word is a URL. If so, sets the URL and continues on to the next word
 
                     Url = word.substring(6);
@@ -59,7 +62,8 @@ public class ReadFile {
 
                 //}
                 //System.out.println(words);
-                addEntryToHashMap(wordsToSites, word, Url); //adds the word to the Hashmap with the corresponding Url.
+                String wordUpperCase = word.toUpperCase();// coverts word to all upper case (means when searching all words will be picked up regardless of case)
+                addEntryToHashMap(wordsToSites, wordUpperCase, Url); //adds the word to the Hashmap with the corresponding Url.
                 addToSiteAndWords(Url, word);
             }
             file.close();

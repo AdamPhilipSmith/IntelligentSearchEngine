@@ -16,7 +16,7 @@ public class Ranker {
                 result++;
         }
 
-        return result / doc.size();
+        return result / doc.size(); //normalises the frequency to avoid a bias towards larger documents
     }
 
     public static double idf(HashMap<String, ArrayList<String>> docs, String term) {
@@ -53,18 +53,22 @@ public class Ranker {
 
     public static void displayRankedResults(HashSet searchResults, String searchedWords) {
 
-        //String[] splitWord = searchedWords.split(" "); // Separates the different words from the search term
+        String[] splitWords = searchedWords.split(" "); // Separates the different words from the search term
         //String word1 = splitWord[0];
         //String word2 = splitWord[2];
         TreeMap<Double, String> rankedURLs = new TreeMap<>(); //Tree map used since it will automatically sort the results by the key
 
         for (Object url : searchResults) {
             List<String> words2 = (List<String>) sitesToWords.get(url);
-            double rank = tfIdf(words2, sitesToWords, searchedWords);
+            double rank = 0;
+            for (int i = 0; i<splitWords.length; i++) {
+                //TODO check that adding Tf IDF together is the best way of doing this
+                rank += tfIdf(words2, sitesToWords, splitWords[i]); //Goes through each of the searched terms for each website, getting the Tf IDF rank to get a combined TF IDF score for each site
+
+
+            }
             String stringURL = url.toString();
             rankedURLs.put(rank, stringURL);
-
-
             //System.out.println(words2.size());
             //System.out.println("tf:" + tf(words2, searchedWords));
             //System.out.println("idf=" + idf(sitesToWords, searchedWords));
