@@ -51,7 +51,7 @@ public class Ranker {
 
     }
 
-    public static void displayResults(HashSet searchResults, String searchedWords) {
+    public static void displayRankedResults(HashSet searchResults, String searchedWords) {
 
         //String[] splitWord = searchedWords.split(" "); // Separates the different words from the search term
         //String word1 = splitWord[0];

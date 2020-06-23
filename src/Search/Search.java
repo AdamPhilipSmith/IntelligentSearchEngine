@@ -19,7 +19,7 @@ public class Search {
 
         if (parts.length == 3)
         {
-            // To future proof the code, we are cloning both queries in order to match how people would intuatively use this function.
+            // To future proof the code, we are cloning both queries in order to match how people would intuitively use this function.
             // Cloning is needed, because retainAll modifies the HashSet in the HashMap.
             HashSet<String> resultsOne = (HashSet) hashMap.get(parts[0]);
             HashSet<String> tmpResultsOne = (HashSet<String>) resultsOne.clone();
@@ -33,6 +33,11 @@ public class Search {
             // TODO need to try and get rid of case sensitivity.
 
             //TODO need to handle more than 2 words
+        }
+
+        if (parts.length >= 4){
+            System.out.println("test");
+            return Search.handleMultipleWords(parts, hashMap);
         }
         return null;
     }
@@ -60,11 +65,39 @@ public class Search {
      */
     private static HashSet<String> handleAndSearch (HashSet<String> resultOne, HashSet<String> resultTwo) {
 
+        //for (int i = 0; i>parts.length())
+
         if (resultOne == null || resultTwo == null) return null;
 
-        resultOne.retainAll(resultTwo);
+        resultOne.retainAll(resultTwo); // keeps only the matching sites
 
         return resultOne;
+    }
+
+    private static HashSet<String> handleMultipleWords (String[] parts, LinkedHashMap hashMap) {
+
+
+        HashSet<String> initialResults = (HashSet) hashMap.get(parts[0]);
+        if (initialResults == null) return null;
+
+        for (int i = 0; i < parts.length; i++){
+
+            //System.out.println(initialResults);
+            HashSet<String> nextWordResults = (HashSet) hashMap.get(parts[i]);
+            System.out.println(i);
+            System.out.println(nextWordResults);
+
+            if (nextWordResults == null) return null;
+            initialResults.retainAll(nextWordResults);
+            System.out.println(initialResults);
+
+        }
+
+
+
+
+
+        return initialResults;
     }
 }
 

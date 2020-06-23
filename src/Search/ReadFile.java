@@ -11,10 +11,10 @@ import java.util.LinkedHashMap;
 
 public class ReadFile {
 
-    public static LinkedHashMap wordsToSites = new LinkedHashMap<String, HashSet>();//Used Hashset since I don't want duplicates
-    public static HashMap sitesToWords = new HashMap<String, ArrayList<String>>(); //Used ArrayList since I do want duplicates
+    public static LinkedHashMap wordsToSites = new LinkedHashMap<String, HashSet>();//Used Hashset since I don't want duplicates here
+    public static HashMap sitesToWords = new HashMap<String, ArrayList<String>>(); //Used ArrayList since I do want duplicates here
 
-
+        //TODO need to deal with punctioation at the end of words. For example, 'chapter.' will not be picked up when search 'chapter'
 
     public ReadFile(String filename) throws IOException {
 

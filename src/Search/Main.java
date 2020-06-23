@@ -13,18 +13,12 @@ public class Main {
     static List<List<String>> sitesAndWordsList = new ArrayList<List<String>>();
 
     public static void main(String[] args) throws IOException {
-
-
         //Crawler crawler = new Crawler("https://www.mmu.ac.uk/", 1000);
         //crawler.crawl();
-
-
 
         //HashSet allWordsOnSite = Search("https://www.mmu.ac.uk/business-school/business/sme-support/fuel-cell-innovation-centre", wordResults);
 
         //ArrayList tester = new ArrayList();
-
-
 
        /* tester = (ArrayList) sitesAndWords.get("https://www.mmu.ac.uk/international/fees-and-funding");
         double wordCount = 0;
@@ -41,18 +35,18 @@ public class Main {
         //System.out.println(rankScore);
         //System.out.println(wordCount);
         //System.out.println(tester);
-        ReadFile test = new ReadFile("mmuSiteTest1000.txt");//Reads the mmu website, putting the info into of an Index of words to websites and another index linking websites to words
+        ReadFile test = new ReadFile("mmuSiteTest1000.txt");//Reads the mmu website, putting the info into of an Index of words linking to websites and another index linking websites to words
 
-        String searchedWord = "Manchester";
+        String searchedWord = "French second seminar which chapter.";
 
         HashSet searchResults = Search(searchedWord, wordsToSites);// Gets a list of sites containing the search term, indexed by word.
 
-        //List<String> words = (List<String>) sitesToWords.get("https://www.mmu.ac.uk/international/fees-and-funding");
+        //List<String> words = (List<String>) sitesToWords.get("https://www.mmu.ac.uk/cell/news-and-events/story/index.php?id=12399");
 
-        Ranker.displayResults(searchResults, searchedWord);
+        //Ranker.displayRankedResults(searchResults, searchedWord);
 
-
-
+        //System.out.println(words);
+        System.out.println(searchResults);
         /*for(Object url : searchResults){
 
             System.out.println(url);
@@ -79,7 +73,6 @@ public class Main {
             }
         }*/
 
-
         //System.out.println(results2);
         //System.out.println(allWordsOnSite);
         //System.out.println(sitesAndWords);
@@ -89,7 +82,6 @@ public class Main {
            }
        }
 */
-
 
     }
 
