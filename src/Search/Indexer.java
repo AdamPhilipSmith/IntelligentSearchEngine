@@ -9,14 +9,22 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
-public class ReadFile {
+public class Indexer {
 
-    public static LinkedHashMap wordsToSites = new LinkedHashMap<String, HashSet>();//Used Hashset since I don't want duplicates here
-    public static HashMap sitesToWords = new HashMap<String, ArrayList<String>>(); //Used ArrayList since I do want duplicates here
+    //TODO try to make these not public
+    static LinkedHashMap wordsToSites; // = new LinkedHashMap<String, HashSet>();//Used Hashset since I don't want duplicates here
+    static HashMap sitesToWords;// = new HashMap<String, ArrayList<String>>(); //Used ArrayList since I do want duplicates here
+
+    //private Indexer(){}
 
         //TODO need to deal with punctioation at the end of words. For example, 'chapter.' will not be picked up when search 'chapter'
 
-    public ReadFile(String filename) throws IOException {
+    static {
+        wordsToSites = new LinkedHashMap<String, HashSet>();
+        sitesToWords = new HashMap<String, ArrayList<String>>();
+    }
+
+    public Indexer(String filename) throws IOException {
 
         String Url = null;
 
@@ -33,6 +41,8 @@ public class ReadFile {
                     break;
 
                 }
+
+
                 //System.out.println(word);
 
                 //System.out.println(wordUpper);
@@ -63,8 +73,13 @@ public class ReadFile {
                 //}
                 //System.out.println(words);
                 String wordUpperCase = word.toUpperCase();// coverts word to all upper case (means when searching all words will be picked up regardless of case)
-                addEntryToHashMap(wordsToSites, wordUpperCase, Url); //adds the word to the Hashmap with the corresponding Url.
-                addToSiteAndWords(Url, word);
+
+                //if (!wordUpperCase.equals("THE") && !wordUpperCase.equals("IS") && !wordUpperCase.equals("AT") && !wordUpperCase.equals("ON") && !wordUpperCase.equals("WHICH")){ // checks the word is not a 'stop word'. If so, it adds it. //TODO might get rid of this, discuss why and which words to use in project. //TODO doesn't work for some reason
+
+                    addEntryToHashMap(wordsToSites, wordUpperCase, Url); //adds the word to the Hashmap with the corresponding Url.
+                    addToSiteAndWords(Url, word);
+                //}
+
             }
             file.close();
         } catch (FileNotFoundException e) {

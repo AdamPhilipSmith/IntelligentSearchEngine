@@ -2,7 +2,9 @@ package Search;
 
 import java.util.*;
 
-import static Search.ReadFile.sitesToWords;
+import static Search.Indexer.sitesToWords;
+import static Search.Indexer.wordsToSites;
+import static Search.SimilarWords.retrieveSimilarWords;
 
 public class Ranker {
 
@@ -54,39 +56,48 @@ public class Ranker {
     public static void displayRankedResults(HashSet searchResults, String searchedWords) {
 
         String[] splitWords = searchedWords.split(" "); // Separates the different words from the search term
-        //String word1 = splitWord[0];
-        //String word2 = splitWord[2];
+
         TreeMap<Double, String> rankedURLs = new TreeMap<>(); //Tree map used since it will automatically sort the results by the key
 
-        for (Object url : searchResults) {
-            List<String> words2 = (List<String>) sitesToWords.get(url);
-            double rank = 0;
-            for (int i = 0; i<splitWords.length; i++) {
-                //TODO check that adding Tf IDF together is the best way of doing this
-                rank += tfIdf(words2, sitesToWords, splitWords[i]); //Goes through each of the searched terms for each website, getting the Tf IDF rank to get a combined TF IDF score for each site
+        if (searchResults == null){
+            System.out.println("No results found, but we do have the following, similar words:");
+            System.out.println(retrieveSimilarWords(wordsToSites, searchedWords));
 
-
-            }
-            String stringURL = url.toString();
-            rankedURLs.put(rank, stringURL);
-            //System.out.println(words2.size());
-            //System.out.println("tf:" + tf(words2, searchedWords));
-            //System.out.println("idf=" + idf(sitesToWords, searchedWords));
-
-            //System.out.print("Rank:");
-
-
-            // System.out.println("");
         }
-        Map<Double, String> sortedURLs = rankedURLs.descendingMap(); //Since the results are ordered lowest to highest, it needs to be reversed to get the best results at the top
-        System.out.println(sortedURLs);
-        Iterator it = sortedURLs.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            System.out.println(pair.getValue());
 
-            //leave below for now but it isn't used
-            //List<Double> URL = (List<Double>) pair.getKey();
+        if (searchResults != null) {
+            for (Object url : searchResults) {
+                List<String> words2 = (List<String>) sitesToWords.get(url);
+                double rank = 0;
+                for (int i = 0; i < splitWords.length; i++) {
+                    //TODO check that adding Tf IDF together is the best way of doing this
+                    rank += tfIdf(words2, sitesToWords, splitWords[i]); //Goes through each of the searched terms for each website, getting the Tf IDF rank to get a combined TF IDF score for each site
+
+
+                }
+                String stringURL = url.toString();
+                rankedURLs.put(rank, stringURL);
+                //System.out.println(words2.size());
+                //System.out.println("tf:" + tf(words2, searchedWords));
+                //System.out.println("idf=" + idf(sitesToWords, searchedWords));
+
+                //System.out.print("Rank:");
+
+
+                // System.out.println("");
+            }
+            Map<Double, String> sortedURLs = rankedURLs.descendingMap(); //Since the results are ordered lowest to highest, it needs to be reversed to get the best results at the top
+
+
+            System.out.println(sortedURLs);
+            Iterator it = sortedURLs.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry) it.next();
+                System.out.println(pair.getValue());
+
+                //leave below for now but it isn't used
+                //List<Double> URL = (List<Double>) pair.getKey();
+            }
         }
 
     /*public class reverseRank implements Comparator<String>{
@@ -97,5 +108,7 @@ public class Ranker {
         }
 
     }*/
+
+
     }
 }

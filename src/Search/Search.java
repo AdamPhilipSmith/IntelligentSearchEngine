@@ -9,7 +9,7 @@ public class Search {
     //TODO fix all code on this page
 
 
-    public static HashSet<String> Search(String query, LinkedHashMap hashMap){
+    public static HashSet<String> search(String query, LinkedHashMap hashMap){
 
         String queryUpperCase = query.toUpperCase();// coverts word to all lower case (means when searching all words will be picked up regardless of case)
 
@@ -89,12 +89,12 @@ public class Search {
             //System.out.println(initialResults);
             HashSet<String> nextWordResults = (HashSet) hashMap.get(parts[i]);
             //System.out.println(i);
-            System.out.println(parts[i]+ ":");
-            System.out.println(nextWordResults);
+            //System.out.println(parts[i]+ ":");
+            //System.out.println(nextWordResults);
 
             if (nextWordResults == null) return null;
             initialResults.retainAll(nextWordResults);
-            System.out.println(initialResults);
+            //System.out.println(initialResults);
 
         }
 

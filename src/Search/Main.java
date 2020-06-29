@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import static Search.ReadFile.wordsToSites;
-import static Search.Search.Search;
+import static Search.Indexer.wordsToSites;
+import static Search.Search.search;
 
-public class Main {
+public class Main  {
 
-    static List<List<String>> sitesAndWordsList = new ArrayList<List<String>>();
+    private static List<List<String>> sitesAndWordsList = new ArrayList<List<String>>();
 
     public static void main(String[] args) throws IOException {
         //Crawler crawler = new Crawler("https://www.mmu.ac.uk/", 1000);
@@ -35,18 +35,20 @@ public class Main {
         //System.out.println(rankScore);
         //System.out.println(wordCount);
         //System.out.println(tester);
-        ReadFile test = new ReadFile("mmuSiteTest1000.txt");//Reads the mmu website, putting the info into of an Index of words linking to websites and another index linking websites to words
+        Indexer test = new Indexer("mmuSiteTest1000.txt");//Reads the mmu website, putting the info into of an Index of words linking to websites and another index linking websites to words
 
-        String searchedWord = "French those are and this";
+        String searchedWord = "Computing";
 
-        HashSet searchResults = Search(searchedWord, wordsToSites);// Gets a list of sites containing the search term, indexed by word.
+        HashSet searchResults = search(searchedWord, wordsToSites); // Gets a list of sites containing the search term, indexed by word.
 
         //List<String> words = (List<String>) sitesToWords.get("https://www.mmu.ac.uk/cell/news-and-events/story/index.php?id=12399");
 
         Ranker.displayRankedResults(searchResults, searchedWord);
 
         //System.out.println(words);
-        System.out.println(searchResults);
+
+
+        //System.out.println(searchResults);
         /*for(Object url : searchResults){
 
             System.out.println(url);
