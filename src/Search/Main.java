@@ -3,6 +3,7 @@ package Search;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static Search.Indexer.wordsToSites;
@@ -35,9 +36,10 @@ public class Main  {
         //System.out.println(rankScore);
         //System.out.println(wordCount);
         //System.out.println(tester);
-        Indexer test = new Indexer("mmuSiteTest1000.txt");//Reads the mmu website, putting the info into of an Index of words linking to websites and another index linking websites to words
+        LinkedHashMap hashMap = Indexer.initialise("mmuSiteTest1000.txt");
+        //Indexer test = Indexer.initialise("mmuSiteTest1000.txt");//Reads the mmu website, putting the info into of an Index of words linking to websites and another index linking websites to words
 
-        String searchedWord = "Computing";
+        String searchedWord = "Manchester";
 
         HashSet searchResults = search(searchedWord, wordsToSites); // Gets a list of sites containing the search term, indexed by word.
 

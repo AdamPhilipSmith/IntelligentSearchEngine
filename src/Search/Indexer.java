@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 public class Indexer {
 
     //TODO try to make these not public
-    static LinkedHashMap wordsToSites; // = new LinkedHashMap<String, HashSet>();//Used Hashset since I don't want duplicates here
+    public static LinkedHashMap wordsToSites; // = new LinkedHashMap<String, HashSet>();//Used Hashset since I don't want duplicates here
     static HashMap sitesToWords;// = new HashMap<String, ArrayList<String>>(); //Used ArrayList since I do want duplicates here
 
     //private Indexer(){}
@@ -24,7 +24,7 @@ public class Indexer {
         sitesToWords = new HashMap<String, ArrayList<String>>();
     }
 
-    public Indexer(String filename) throws IOException {
+    public static LinkedHashMap initialise(String filename) throws IOException {
 
         String Url = null;
 
@@ -78,6 +78,8 @@ public class Indexer {
 
                     addEntryToHashMap(wordsToSites, wordUpperCase, Url); //adds the word to the Hashmap with the corresponding Url.
                     addToSiteAndWords(Url, word);
+                //System.out.println(wordsToSites);
+                //System.out.println(sitesToWords);
                 //}
 
             }
@@ -85,7 +87,11 @@ public class Indexer {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        return wordsToSites;
+    }
 
+    public static LinkedHashMap getInstance() {
+        return wordsToSites;
     }
 
 
@@ -130,13 +136,14 @@ public class Indexer {
         ArrayList temp = new ArrayList();
         temp = (ArrayList) sitesToWords.get(url);
 
+        //If the URL has already been added, the new word is added as a value to the URL key
         if (temp!=null) {
             temp.add(word);
             //System.out.println(1);
         }
-        //TODO Below shouldn't be necessary and yet it breaks if it isn't here??? System never prints '2' so looks like it isn't used.
+        //If the URL
         else{
-            //System.out.println(2);
+            //System.out.println("THIS WAS USED. CHECK INDEXER/ADDTOSITEANDWORDS");
             ArrayList temp2 = new ArrayList();
             temp2.add(word);
             temp = temp2;

@@ -53,7 +53,9 @@ public class Ranker {
 
     }
 
-    public static void displayRankedResults(HashSet searchResults, String searchedWords) {
+    public static Map<Double,String> displayRankedResults(HashSet searchResults, String searchedWords) {
+
+        Map<Double, String> sortedURLs = new HashMap<Double, String>();
 
         String[] splitWords = searchedWords.split(" "); // Separates the different words from the search term
 
@@ -86,7 +88,7 @@ public class Ranker {
 
                 // System.out.println("");
             }
-            Map<Double, String> sortedURLs = rankedURLs.descendingMap(); //Since the results are ordered lowest to highest, it needs to be reversed to get the best results at the top
+            sortedURLs = rankedURLs.descendingMap(); //Since the results are ordered lowest to highest, it needs to be reversed to get the best results at the top
 
 
             System.out.println(sortedURLs);
@@ -109,6 +111,6 @@ public class Ranker {
 
     }*/
 
-
+        return sortedURLs;
     }
 }
