@@ -30,25 +30,7 @@ public class ListList extends Application {
 
         List<Hyperlink> links = new ArrayList<>();
 
-        String searchQuery = "Tree";
 
-        HashSet searchResults = search(searchQuery, wordsToSites);
-
-        Map<Double,String> sortedURLs = Ranker.displayRankedResults(searchResults,searchQuery); // ranks the results
-
-        String result3 = "";
-
-        Iterator it = sortedURLs.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            //String result2 = pair.getValue().toString();
-            String result2 = (pair.getValue().toString());
-
-            Hyperlink link = new Hyperlink(result2);
-            links.add(link);
-
-            it.remove(); // avoids a ConcurrentModificationException
-        }
 
 
         AnchorPane pane = new AnchorPane();
@@ -69,24 +51,54 @@ public class ListList extends Application {
             });
         }
 
-        listView.getItems().addAll(links);
+
+        //listView.getItems().addAll(links);
         HBox hBox = new HBox();
         final TextField urlField = new TextField();
         Button b = new Button("Search");
+
+
+
+
         hBox.getChildren().addAll(b, urlField);
 
         b.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent t) {
-                addLink(urlField.getText().trim());
+                links.clear();
+                listView.getItems().clear();
+                String searchQuery = urlField.getText();
+
+                HashSet searchResults = search(searchQuery, wordsToSites);
+
+                Map<Double,String> sortedURLs = Ranker.displayRankedResults(searchResults,searchQuery); // ranks the results
+
+                String result3 = "";
+
+                Iterator it = sortedURLs.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry)it.next();
+                    //String result2 = pair.getValue().toString();
+                    String result2 = (pair.getValue().toString());
+
+                    Hyperlink link = new Hyperlink(result2);
+                    //links.add(link);
+                    addLink(result2);
+
+                    it.remove(); // avoids a ConcurrentModificationException
+                }
+                listView.getItems().addAll(links);
                 urlField.clear();
             }
         });
         vBox.getChildren().add(hBox);
+        listView.setPrefWidth(1200);
+        listView.setPrefHeight(1180);//TODO maybe make this scale dynamically with the size of the links
         vBox.getChildren().add(listView);
+
         pane.getChildren().add(vBox);
-        Scene scene = new Scene(pane, 800, 600);
+        Scene scene = new Scene(pane, 1200, 800);
         primaryStage.setTitle("Intelligent Search Engine:");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -112,6 +124,7 @@ public class ListList extends Application {
             }
 
         });
+
         listView.getItems().add(link);
     }
 
