@@ -21,7 +21,7 @@ public class Search {
 
 
 
-        /*if (parts.length == 3)
+        if (parts.length == 3)
         {
             // To future proof the code, we are cloning both queries in order to match how people would intuitively use this function.
             // Cloning is needed, because retainAll modifies the HashSet in the HashMap.
@@ -37,7 +37,7 @@ public class Search {
 
 
 
-        }*/
+        }
 
         if (parts.length > 1){
             //System.out.println("test");

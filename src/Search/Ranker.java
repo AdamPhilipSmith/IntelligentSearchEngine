@@ -3,8 +3,6 @@ package Search;
 import java.util.*;
 
 import static Search.Indexer.sitesToWords;
-import static Search.Indexer.wordsToSites;
-import static Search.SimilarWords.retrieveSimilarWords;
 
 public class Ranker {
 
@@ -61,11 +59,7 @@ public class Ranker {
 
         TreeMap<Double, String> rankedURLs = new TreeMap<>(); //Tree map used since it will automatically sort the results by the key
 
-        if (searchResults == null){
-            System.out.println("No results found, but we do have the following, similar words:");
-            System.out.println(retrieveSimilarWords(wordsToSites, searchedWords));
 
-        }
 
         if (searchResults != null) {
             for (Object url : searchResults) {

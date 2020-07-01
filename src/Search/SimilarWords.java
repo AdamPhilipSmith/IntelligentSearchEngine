@@ -16,14 +16,16 @@ public class SimilarWords {
 
         for (Map.Entry<String, HashSet> entry : map.entrySet()) {
             if (distance(query, entry.getKey()) == 1) {
-                similarWords.add(entry.getKey());
+
+                similarWords.add(entry.getKey().toLowerCase());
             }
         }
         
         if (similarWords.isEmpty()) {  // If there are no words that have distance 1, get words with distance 2.
             for (Map.Entry<String, HashSet> entry : map.entrySet()) {
                 if (distance(query, entry.getKey()) == 2) {
-                    similarWords.add(entry.getKey());
+
+                    similarWords.add(entry.getKey().toLowerCase());
                 }
             }            
         }
