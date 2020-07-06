@@ -10,6 +10,8 @@ import java.util.Map;
 public class SimilarWords {
     
     public static HashSet<String> retrieveSimilarWords(LinkedHashMap hashMap, String query) {
+
+        String[] parts = query.split(" ");
         HashSet<String> similarWords = new HashSet();
         
         Map<String, HashSet> map = hashMap;

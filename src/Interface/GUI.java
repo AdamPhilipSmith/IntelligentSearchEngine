@@ -16,19 +16,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.*;
 
 import static Search.Indexer.wordsToSites;
 import static Search.Search.search;
 import static Search.SimilarWords.retrieveSimilarWords;
 
-public class ListList extends Application {
+public class GUI extends Application {
 
 
     final ListView listView = new ListView();
     @Override
-    public void start(Stage primaryStage) throws MalformedURLException {
+    public void start(Stage primaryStage) {
 
 
         List<Hyperlink> links = new ArrayList<>();
@@ -65,71 +64,69 @@ public class ListList extends Application {
 
         hBox.getChildren().addAll(b, searchField);
 
-        b.setOnAction(new EventHandler<ActionEvent>() {
+        b.setOnAction(t -> {
+            // gets the current system time so we can see how long the search has taken
+            long start = System.currentTimeMillis();
+            links.clear();
+            listView.getItems().clear();
 
-            @Override
-            public void handle(ActionEvent t) {
-                // gets the current system time so we can see how long the search has taken
-                long start = System.currentTimeMillis();
-                links.clear();
-                listView.getItems().clear();
+            String searchQuery = searchField.getText();
 
-                String searchQuery = searchField.getText();
+            HashSet searchResults = search(searchQuery, wordsToSites);
 
-                HashSet searchResults = search(searchQuery, wordsToSites);
+            //If no words are found, prints list of similar words
 
-                //If no words are found, prints list of similar words
+            System.out.println(searchResults);
 
-                if (searchResults != null) {
-
+            if (searchResults != null) {
 
 
 
-                    Map<Double, String> sortedURLs = Ranker.displayRankedResults(searchResults, searchQuery); // ranks the results
 
-                    String result3 = "";
-                    int numberOfLinks = 0;
+                Map<Double, String> sortedURLs = Ranker.displayRankedResults(searchResults, searchQuery); // ranks the results
 
-                    Iterator it = sortedURLs.entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry) it.next();
-                        //String result2 = pair.getValue().toString();
-                        String result2 = (pair.getValue().toString());
+                String result3 = "";
+                int numberOfLinks = 0;
 
-                        Hyperlink link = new Hyperlink(result2);
-                        //links.add(link);
-                        addLink(result2);
+                Iterator it = sortedURLs.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry) it.next();
+                    //String result2 = pair.getValue().toString();
+                    String result2 = (pair.getValue().toString());
 
-                        numberOfLinks++;
+                    Hyperlink link = new Hyperlink(result2);
+                    //links.add(link);
+                    addLink(result2);
 
-                        it.remove(); // avoids a ConcurrentModificationException
-                    }
-                    // Gets the system time once the process is completed, takes the start time away from it to determine total time
-                    long time = ((System.currentTimeMillis() - start));
+                    numberOfLinks++;
 
-                    // Adds all the links to the list view
-
-                    listView.getItems().addAll(links);
-
-                    // Appends the total time taken and number of results searched to the top of the list
-                    listView.getItems().add(0, numberOfLinks + " results found in " + time + " millisecond(s)."); //
-
-                    // Clears the search field for the next Search
-                    searchField.clear();
-
+                    it.remove(); // avoids a ConcurrentModificationException
                 }
-                else {
-                    listView.getItems().add(0, "No results found for this word/s. Did you mean one of the following, similar word/s:,");
-                    listView.getItems().add(1, retrieveSimilarWords(wordsToSites, searchQuery));
-                }
+                // Gets the system time once the process is completed, takes the start time away from it to determine total time
+                long time = ((System.currentTimeMillis() - start));
 
+                // Adds all the links to the list view
+
+                listView.getItems().addAll(links);
+
+                // Appends the total time taken and number of results searched to the top of the list
+                listView.getItems().add(0, numberOfLinks + " results found in " + time + " millisecond(s)."); //
+
+                // Clears the search field for the next Search
+                searchField.clear();
 
             }
+            else {
+                listView.getItems().add(0, "No results found for this word/s. Did you mean one of the following, similar word/s:,");
+                listView.getItems().add(1, retrieveSimilarWords(wordsToSites, searchQuery));
+            }
+
+
         });
         vBox.getChildren().add(hBox);
 
         listView.setPrefWidth(700);
-        listView.setPrefHeight(1000);//TODO maybe make this scale dynamically with the size of the links
+        listView.setPrefHeight(800);//TODO maybe make this scale dynamically with the size of the links
         vBox.getChildren().add(listView);
         //vBox.getChildren().add(resultText);
 

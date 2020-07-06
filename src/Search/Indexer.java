@@ -10,17 +10,21 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 public class Indexer {
+    //TODO code fixed but might be worth another check
 
     //TODO try to make these not public
-    public static LinkedHashMap wordsToSites; // = new LinkedHashMap<String, HashSet>();//Used Hashset since I don't want duplicates here
-    static HashMap sitesToWords;// = new HashMap<String, ArrayList<String>>(); //Used ArrayList since I do want duplicates here
+
+    public static LinkedHashMap wordsToSites;
+    static HashMap sitesToWords;
 
     //private Indexer(){}
 
-        //TODO need to deal with punctioation at the end of words. For example, 'chapter.' will not be picked up when search 'chapter'
 
     static {
+        //Used Hashset since I don't want duplicates here
         wordsToSites = new LinkedHashMap<String, HashSet>();
+
+        //Used ArrayList since I do want duplicates here
         sitesToWords = new HashMap<String, ArrayList<String>>();
     }
 
@@ -29,57 +33,57 @@ public class Indexer {
         String Url = null;
 
         try {
-            BufferedReader file = new BufferedReader(new FileReader(filename)); // Opens file
+            // Opens the file specified to launch in the GUI main method
+            BufferedReader file = new BufferedReader(new FileReader(filename));
 
             while (true) {
-                String word = file.readLine(); //reads the word
+
+                // Gets the next word  word and stores it as a String
+                String word = file.readLine();
 
 
-
-                if (word == null) { //checks for the end of the file
-
+                //Ends the method once the end of the file has been reached
+                if (word == null) {
                     break;
-
                 }
 
+                //checks if the word is a URL. If so, sets the URL and continues on to the next word
+                if (word.startsWith("*PAGE:")) {
 
-                //System.out.println(word);
-
-                //System.out.println(wordUpper);
-                if (word.startsWith("*PAGE:")) { //checks if the word is a URL. If so, sets the URL and continues on to the next word
-
+                    //Sets the URL as the text following "*PAGE:"
                     Url = word.substring(6);
 
-                    String[] _arr = Url.split("\\s"); // Removes the occasional time a website still has extra text after its URL for some reason. //TODO Maybe mention this in write up maybe (had problems and fixed them.)
+                    // Removes the occasional time a website still has extra text after its URL for some reason. //TODO Maybe mention this in write up maybe (had problems and fixed them.)
+                    String[] _arr = Url.split("\\s");
                     Url = _arr[0];
 
-
-                    if (Url.substring(Url.length() - 1).equals("/")) { // Gets rid of the "/" at the end of some URL's preventing duplicate results.//TODO same as above
+                    // Gets rid of the "/" at the end of some URL's preventing duplicate results.//TODO same as above
+                    if (Url.substring(Url.length() - 1).equals("/")) {
                         Url = Url.substring(0, Url.length() - 1);
                     }
 
 
                     continue;
                 }
-
-                if (Url == null) { // keeps going until we find the first Url so we don't add words without a corresponding Url.
-
+                // keeps going until we find the first Url so we don't add words without a corresponding Url.
+                if (Url == null) {
                     continue;
                 }
-               //ArrayList<String> words = (ArrayList<String>) sitesAndWords.get(Url);
 
-                //if (words == null) {
+                // Gets rid of the punctuation at the end of some words, meaning they were not being picked up in the Search //TODO same as above
+                if (word.length() > 1) {
+                    if (word.substring(word.length() - 1).equals(".") || word.substring(word.length() - 1).equals(",") || word.substring(word.length() - 1).equals("!") || word.substring(word.length() - 1).equals("?")) {
+                        word = word.substring(0, word.length() - 1);
+                    }
+                }
 
-                //}
-                //System.out.println(words);
-                String wordUpperCase = word.toUpperCase();// coverts word to all upper case (means when searching all words will be picked up regardless of case)
+                // coverts word to all upper case (means when searching all words will be picked up regardless of case)
+                String wordUpperCase = word.toUpperCase();
 
                 //if (!wordUpperCase.equals("THE") && !wordUpperCase.equals("IS") && !wordUpperCase.equals("AT") && !wordUpperCase.equals("ON") && !wordUpperCase.equals("WHICH")){ // checks the word is not a 'stop word'. If so, it adds it. //TODO might get rid of this, discuss why and which words to use in project. //TODO doesn't work for some reason
 
-                    addEntryToHashMap(wordsToSites, wordUpperCase, Url); //adds the word to the Hashmap with the corresponding Url.
-                    addToSiteAndWords(Url, word);
-                //System.out.println(wordsToSites);
-                //System.out.println(sitesToWords);
+                addToLinkedHashMap(wordsToSites, wordUpperCase, Url); //adds the word to the Hashmap with the corresponding Url.
+                addToSiteAndWords(Url, word);
                 //}
 
             }
@@ -94,56 +98,42 @@ public class Indexer {
         return wordsToSites;
     }
 
+    // Adds searched word as key and url as a value of the hashmap. Checks for duplicates only adding new Url if previous doesn't exist.
+    public static void addToLinkedHashMap(LinkedHashMap hashMap, String word, String url) {
 
-    //TODO sort the code below
-
-    /**
-     * @param hashMap
-     * @param word
-     * @param url     Adds the word as the key and the url as the value of the hashmap. Checks for duplicates inside each UrlList and only appends
-     *                new urls to the end.
-     */
-    protected static void addEntryToHashMap(LinkedHashMap hashMap, String word, String url) { // Adds searched word as key and url as a value of the hashmap. Checks for duplicates only adding new Url if previous doesn't exist.
-        //System.out.println(word);
         HashSet<String> urlHashMap = (HashSet) hashMap.get(word);
-        //System.out.println(hashMap.get(word));
-        //System.out.println(urlHashMap);
 
-        if (urlHashMap == null) { //Checks to see if this Url has already been added for this word.
+        //Checks to see if this Url has already been added for this word.
+        if (urlHashMap == null) {
             HashSet<String> hashSet = new HashSet<String>();
             hashSet.add(url);
             hashMap.put(word, hashSet);
         } else {
-            //System.out.println(url);
-            //System.out.println(urlHashMap);
+
             //TODO might cause problems
             if (urlHashMap.contains(url)) {
                 urlHashMap.add(url);
             }
             urlHashMap.add(url);
 
-            //System.out.println(urlHashMap);
         }
     }
 
-    protected static void addToSiteAndWords(String url, String word) { // Adds searched word as key and url as a value of the hashmap. Checks for duplicates only adding new Url if previous doesn't exist.
-        //System.out.println(word);
-        //HashSet<String> wordHashMap = (HashSet) hashMap.get(url);
-        //System.out.println(hashMap.get(word));
-        //System.out.println(urlHashMap);
+    // Adds searched word as key and url as a value of the hashmap. Checks for duplicates only adding new Url if previous doesn't exist.
+    public static void addToSiteAndWords(String url, String word) {
 
 
-        ArrayList temp = new ArrayList();
+        ArrayList temp;
         temp = (ArrayList) sitesToWords.get(url);
 
         //If the URL has already been added, the new word is added as a value to the URL key
-        if (temp!=null) {
+        if (temp != null) {
             temp.add(word);
-            //System.out.println(1);
+
         }
-        //If the URL
-        else{
-            //System.out.println("THIS WAS USED. CHECK INDEXER/ADDTOSITEANDWORDS");
+        //If the URL hasn't been added, a new ArrayList is created with the word and the URL is added to the map with the new ArrayList
+        else {
+
             ArrayList temp2 = new ArrayList();
             temp2.add(word);
             temp = temp2;
@@ -152,20 +142,8 @@ public class Indexer {
         }
 
         sitesToWords.put(url, temp);
-        //System.out.println(sitesAndWords);
-        //System.out.println("/////////////////////////////////////////");
 
-       /* if (wordHashMap == null) { //Checks to see if this word has already been added for this word.
-            HashSet<String> hashSet2 = new HashSet<String>();
-            hashSet2.add(word);
-            hashMap.put(url, hashSet);
-        } else {*/
-
-           // wordHashMap.add(word);
-
-
-            //System.out.println(urlHashMap);
-        }
     }
+}
 
 
