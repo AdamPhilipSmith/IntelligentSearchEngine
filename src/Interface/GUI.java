@@ -96,8 +96,13 @@ public class GUI extends Application {
             }
             //If no words are found, prints list of similar words
             else {
-                listView.getItems().add(0, "No results found for this word/s. Did you mean one of the following, similar word/s:,");
-                listView.getItems().add(1, retrieveSimilarWords(wordsToSites, searchQuery));
+                if ((!retrieveSimilarWords(wordsToSites, searchQuery).isEmpty())) {
+                    listView.getItems().add(0, "No results found for this word/s. Did you mean one of the following, similar word/s:,");
+                    listView.getItems().add(1, retrieveSimilarWords(wordsToSites, searchQuery));
+                }
+                else{
+                    listView.getItems().add(0, "No results found for this word/s and no similar words could be found.");
+                }
             }
 
         });

@@ -25,12 +25,14 @@ public class Search {
         if (parts.length == 3) {
 
             if (parts[1].equals("OR")) {
-
+                //Clone made of each result and those are sent to the orSearchHandler otherwise weird stuff happens that I don't understand
                 HashSet<String> firstWordResults = (HashSet) hashMap.get(parts[0]);
+                HashSet<String> firstWordResultsClone = (HashSet<String>) firstWordResults.clone();
 
                 HashSet<String> secondWordResults = (HashSet) hashMap.get(parts[2]);
+                HashSet<String> secondWordResultsClone = (HashSet<String>) secondWordResults.clone();
 
-                return orSearchHandler(firstWordResults, secondWordResults);
+                return orSearchHandler(firstWordResultsClone, secondWordResultsClone);
             }
 
         }
@@ -38,7 +40,7 @@ public class Search {
         return searchHandler(parts, hashMap);
 
     }
-
+    //TODO 'OR' search still doesn't work properly. Breaks searches done afterwards
     //Checks the results from both words specified by 'OR' and combines the search results.
     public static HashSet<String> orSearchHandler(HashSet<String> firstWordResults, HashSet<String> secondWordResults) {
 
