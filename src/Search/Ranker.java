@@ -38,9 +38,9 @@ public class Ranker {
         }
 
         //TODO maybe use math.log10. Google it
-        return Math.log(indexedSite.size() / n);
+        return Math.log10(indexedSite.size() / n);
     }
-    // Combines the tf and the idf to give a tf-idf rating
+    // Multiplies the tf and the idf to give a tf-idf rating
     public static double tfIdf(List<String> page, HashMap<String, ArrayList<String>> indexedSite, String term) {
 
         return tf(page, term) * idf(indexedSite, term);
@@ -48,7 +48,7 @@ public class Ranker {
     }
 
     //Determines the tf-idf for all websites returned in the search results, combining their scores for each word, ranking them and then returning them in descending order
-    public static Map<Double, String> displayRankedResults(HashSet searchResults, String searchedWords) {
+    public static Map<Double, String> rankResults(HashSet searchResults, String searchedWords) {
 
         Map<Double, String> sortedURLs = new HashMap<Double, String>();
 
@@ -73,18 +73,18 @@ public class Ranker {
 
                 rankedURLs.put(rank, stringURL);
             }
-            //Since the results are ordered lowest to highest, it needs to be reversed to get the best results at the top
+            //Since the results are ordered lowest to highest, the list needs to be reversed to get the best results at the top
             sortedURLs = rankedURLs.descendingMap();
 
             //TODO below no longer needed?
             Iterator it = sortedURLs.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry pair = (Map.Entry) it.next();
-                System.out.println(pair.getValue());
-                System.out.println(pair.getKey());
+                //System.out.println(pair.getValue());
+                //System.out.println(pair.getKey());
             }
         }
-
+        System.out.println(sortedURLs);
         return sortedURLs;
     }
 }

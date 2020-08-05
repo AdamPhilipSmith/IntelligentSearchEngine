@@ -3,8 +3,6 @@ package Interface;
 import Search.Indexer;
 import Search.Ranker;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -23,6 +21,14 @@ import static Search.Search.search;
 import static Search.SimilarWords.retrieveSimilarWords;
 
 public class GUI extends Application {
+//TODO sort this code
+
+    //Indexes the specified website and launches the search window
+    public static void main(String[] args) throws IOException {
+
+        Indexer.initialise("mmuSiteTest1000.txt");
+        launch(args);
+    }
 
 
     final ListView listView = new ListView();
@@ -31,36 +37,16 @@ public class GUI extends Application {
 
 
         List<Hyperlink> links = new ArrayList<>();
-
-
-
-
         AnchorPane pane = new AnchorPane();
         VBox vBox = new VBox();
-        //final Hyperlink link = new Hyperlink("http://blog.professional-webworkx.de");
-        //Hyperlink link2= new Hyperlink("http://www.stackoverflow.com");
-
-        //links.add(link);
-        //links.add(link2);
 
         for(final Hyperlink hyperlink : links) {
-            hyperlink.setOnAction(new EventHandler<ActionEvent>() {
-
-                @Override
-                public void handle(ActionEvent t) {
-                    getHostServices().showDocument(hyperlink.getText());
-                }
-            });
+            hyperlink.setOnAction(t -> getHostServices().showDocument(hyperlink.getText()));
         }
 
-
-        //listView.getItems().addAll(links);
         HBox hBox = new HBox();
         final TextField searchField = new TextField();
         Button b = new Button("Search");
-
-
-
 
         hBox.getChildren().addAll(b, searchField);
 
@@ -74,16 +60,10 @@ public class GUI extends Application {
 
             HashSet searchResults = search(searchQuery, wordsToSites);
 
-            //If no words are found, prints list of similar words
-
-            System.out.println(searchResults);
 
             if (searchResults != null) {
-
-
-
-
-                Map<Double, String> sortedURLs = Ranker.displayRankedResults(searchResults, searchQuery); // ranks the results
+                // ranks the results
+                Map<Double, String> sortedURLs = Ranker.rankResults(searchResults, searchQuery);
 
                 String result3 = "";
                 int numberOfLinks = 0;
@@ -91,7 +71,6 @@ public class GUI extends Application {
                 Iterator it = sortedURLs.entrySet().iterator();
                 while (it.hasNext()) {
                     Map.Entry pair = (Map.Entry) it.next();
-                    //String result2 = pair.getValue().toString();
                     String result2 = (pair.getValue().toString());
 
                     Hyperlink link = new Hyperlink(result2);
@@ -106,7 +85,6 @@ public class GUI extends Application {
                 long time = ((System.currentTimeMillis() - start));
 
                 // Adds all the links to the list view
-
                 listView.getItems().addAll(links);
 
                 // Appends the total time taken and number of results searched to the top of the list
@@ -116,20 +94,18 @@ public class GUI extends Application {
                 searchField.clear();
 
             }
+            //If no words are found, prints list of similar words
             else {
                 listView.getItems().add(0, "No results found for this word/s. Did you mean one of the following, similar word/s:,");
                 listView.getItems().add(1, retrieveSimilarWords(wordsToSites, searchQuery));
             }
 
-
         });
         vBox.getChildren().add(hBox);
 
         listView.setPrefWidth(700);
-        listView.setPrefHeight(800);//TODO maybe make this scale dynamically with the size of the links
+        listView.setPrefHeight(800);
         vBox.getChildren().add(listView);
-        //vBox.getChildren().add(resultText);
-
 
         pane.getChildren().add(vBox);
         Scene scene = new Scene(pane, 700, 800);
@@ -139,30 +115,15 @@ public class GUI extends Application {
 
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws IOException {
-        LinkedHashMap hashMap = Indexer.initialise("mmuSiteTest1000.txt");
-        launch(args);
-    }
-
     private void addLink(final String url) {
         final Hyperlink link = new Hyperlink(url);
-        link.setOnAction(new EventHandler<ActionEvent>() {
+        link.setOnAction(t -> {
 
-            @Override
-            public void handle(ActionEvent t) {
-                getHostServices().showDocument(link.getText());
-                //openBrowser(link.getText());
-            }
+            getHostServices().showDocument(link.getText());
 
         });
 
         listView.getItems().add(link);
     }
 
-    private void openBrowser(final String url) {
-        getHostServices().showDocument(url);
-    }
 }
