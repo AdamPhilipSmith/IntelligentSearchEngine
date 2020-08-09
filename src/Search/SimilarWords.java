@@ -1,7 +1,7 @@
 package Search;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 
@@ -9,7 +9,7 @@ import java.util.Map;
 //TODO make it so multiple words can be checked
 public class SimilarWords {
     
-    public static HashSet<String> retrieveSimilarWords(LinkedHashMap hashMap, String query) {
+    public static HashSet<String> retrieveSimilarWords(HashMap hashMap, String query) {
 
         String[] parts = query.split(" ");
         HashSet<String> similarWords = new HashSet();

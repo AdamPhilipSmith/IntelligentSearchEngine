@@ -1,7 +1,7 @@
 package Search;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 
 public class Search {
     //TODO might need this here: private Searcher() {}
@@ -9,7 +9,7 @@ public class Search {
     //TODO code fixed but needs going over
 
 
-    public static HashSet<String> search(String word, LinkedHashMap hashMap) {
+    public static HashSet<String> search(String word, HashMap hashMap) {
 
         // coverts word to all lower case (means when searching all words will be picked up regardless of case)
         String queryUpperCase = word.toUpperCase();
@@ -65,7 +65,7 @@ public class Search {
         return firstWordResults;
     }
     //TODO add unfound words to an array so we can use Similar Words on all of them
-    public static HashSet<String> searchHandler(String[] parts, LinkedHashMap hashMap) {
+    public static HashSet<String> searchHandler(String[] parts, HashMap hashMap) {
 
 
         HashSet<String> initialResults = (HashSet) hashMap.get(parts[0]);

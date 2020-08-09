@@ -7,28 +7,27 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 
 public class Indexer {
     //TODO code fixed but might be worth another check
 
     //TODO try to make these not public
 
-    public static LinkedHashMap wordsToSites;
-    static HashMap sitesToWords;
+    public static HashMap invertedIndex;
+    static HashMap forwardIndex;
 
     //private Indexer(){}
 
 
     static {
         //Used Hashset since I don't want duplicates here
-        wordsToSites = new LinkedHashMap<String, HashSet>();
+        invertedIndex = new HashMap<String, HashSet>();
 
         //Used ArrayList since I do want duplicates here
-        sitesToWords = new HashMap<String, ArrayList<String>>();
+        forwardIndex = new HashMap<String, ArrayList<String>>();
     }
 
-    public static LinkedHashMap initialise(String filename) throws IOException {
+    public static void index(String filename) throws IOException {
 
         String Url = null;
 
@@ -82,8 +81,8 @@ public class Indexer {
 
                 //if (!wordUpperCase.equals("THE") && !wordUpperCase.equals("IS") && !wordUpperCase.equals("AT") && !wordUpperCase.equals("ON") && !wordUpperCase.equals("WHICH")){ // checks the word is not a 'stop word'. If so, it adds it. //TODO might get rid of this, discuss why and which words to use in project. //TODO doesn't work for some reason
 
-                addToLinkedHashMap(wordsToSites, wordUpperCase, Url); //adds the word to the Hashmap with the corresponding Url.
-                addToSiteAndWords(Url, word);
+                addToInvertedIndex(invertedIndex, wordUpperCase, Url); //adds the word to the Hashmap with the corresponding Url.
+                addToForwardIndex(Url, word);
                 //}
 
             }
@@ -91,40 +90,42 @@ public class Indexer {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return wordsToSites;
-    }
 
-    public static LinkedHashMap getInstance() {
-        return wordsToSites;
     }
+    //TODO if problems, put this back
+    //public static HashMap getInstance() {
+       // return invertedIndex;
+   // }
 
     // Adds searched word as key and url as a value of the hashmap. Checks for duplicates only adding new Url if previous doesn't exist.
-    public static void addToLinkedHashMap(LinkedHashMap hashMap, String word, String url) {
+    public static void addToInvertedIndex(HashMap hashMap, String word, String url) {
 
-        HashSet<String> urlHashMap = (HashSet) hashMap.get(word);
+        HashSet<String> urlHashSet = (HashSet) hashMap.get(word);
 
         //Checks to see if this Url has already been added for this word.
-        if (urlHashMap == null) {
+        if (urlHashSet == null) {
+
             HashSet<String> hashSet = new HashSet<String>();
             hashSet.add(url);
             hashMap.put(word, hashSet);
+
         } else {
 
-            //TODO might cause problems
-            if (urlHashMap.contains(url)) {
-                urlHashMap.add(url);
-            }
-            urlHashMap.add(url);
+            //TODO might cause problems ebing commented out
+            //if (urlHashSet.contains(url)) {
+               // urlHashSet.add(url);
+           // }
+            urlHashSet.add(url);
 
         }
     }
 
-    // Adds searched word as key and url as a value of the hashmap. Checks for duplicates only adding new Url if previous doesn't exist.
-    public static void addToSiteAndWords(String url, String word) {
+    // Adds url as key and searched word as a value of the hashmap.
+    public static void addToForwardIndex(String url, String word) {
 
 
         ArrayList temp;
-        temp = (ArrayList) sitesToWords.get(url);
+        temp = (ArrayList) forwardIndex.get(url);
 
         //If the URL has already been added, the new word is added as a value to the URL key
         if (temp != null) {
@@ -134,14 +135,16 @@ public class Indexer {
         //If the URL hasn't been added, a new ArrayList is created with the word and the URL is added to the map with the new ArrayList
         else {
 
-            ArrayList temp2 = new ArrayList();
+           ArrayList temp2 = new ArrayList();
             temp2.add(word);
             temp = temp2;
-            sitesToWords.put(url, temp2);
+
+            //TODO uncomment this code if any problems
+            //forwardIndex.put(url, temp2);
 
         }
 
-        sitesToWords.put(url, temp);
+        forwardIndex.put(url, temp);
 
     }
 }

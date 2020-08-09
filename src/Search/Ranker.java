@@ -2,7 +2,7 @@ package Search;
 
 import java.util.*;
 
-import static Search.Indexer.sitesToWords;
+import static Search.Indexer.forwardIndex;
 
 public class Ranker {
 
@@ -61,12 +61,12 @@ public class Ranker {
         //TODO this breaks 'OR' search
         if (searchResults != null) {
             for (Object url : searchResults) {
-                List<String> words2 = (List<String>) sitesToWords.get(url);
+                List<String> words2 = (List<String>) forwardIndex.get(url);
                 double rank = 0;
                 for (int i = 0; i < splitWords.length; i++) {
                     //TODO check that adding Tf IDF together is the best way of doing this
                     //Goes through each of the searched terms for each website, getting the Tf IDF rank to get a combined TF IDF score for each site
-                    rank += tfIdf(words2, sitesToWords, splitWords[i]);
+                    rank += tfIdf(words2, forwardIndex, splitWords[i]);
 
                 }
                 String stringURL = url.toString();

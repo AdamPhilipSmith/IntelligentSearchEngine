@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.*;
 
-import static Search.Indexer.wordsToSites;
+import static Search.Indexer.invertedIndex;
 import static Search.Search.search;
 import static Search.SimilarWords.retrieveSimilarWords;
 
@@ -26,7 +26,7 @@ public class GUI extends Application {
     //Indexes the specified website and launches the search window
     public static void main(String[] args) throws IOException {
 
-        Indexer.initialise("mmuSiteTest1000.txt");
+        Indexer.index("mmuSiteTest1000.txt");
         launch(args);
     }
 
@@ -58,7 +58,7 @@ public class GUI extends Application {
 
             String searchQuery = searchField.getText();
 
-            HashSet searchResults = search(searchQuery, wordsToSites);
+            HashSet searchResults = search(searchQuery, invertedIndex);
 
 
             if (searchResults != null) {
@@ -96,9 +96,9 @@ public class GUI extends Application {
             }
             //If no words are found, prints list of similar words
             else {
-                if ((!retrieveSimilarWords(wordsToSites, searchQuery).isEmpty())) {
+                if ((!retrieveSimilarWords(invertedIndex, searchQuery).isEmpty())) {
                     listView.getItems().add(0, "No results found for this word/s. Did you mean one of the following, similar word/s:,");
-                    listView.getItems().add(1, retrieveSimilarWords(wordsToSites, searchQuery));
+                    listView.getItems().add(1, retrieveSimilarWords(invertedIndex, searchQuery));
                 }
                 else{
                     listView.getItems().add(0, "No results found for this word/s and no similar words could be found.");

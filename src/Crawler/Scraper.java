@@ -1,6 +1,6 @@
 package Crawler;
 
-import Infrastructure.Filesystem;
+import Infrastructure.FileWriter;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -69,12 +69,12 @@ public class Scraper {
 
         String[] words = htmlDocument.text().split(" ");
 
-        Filesystem.writeToFileByName("scrape", "*PAGE:" + url + "\n", true);
+        FileWriter.writeToFileByName("scrape", "*PAGE:" + url + "\n", true);
 
         for (String word: words)
         {
             if (word != null) {
-                Filesystem.writeToFileByName("scrape", word + "\n", true);
+                FileWriter.writeToFileByName("scrape", word + "\n", true);
             }
         }
     }

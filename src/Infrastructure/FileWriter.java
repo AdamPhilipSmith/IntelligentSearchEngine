@@ -2,7 +2,7 @@ package Infrastructure;
 
 import java.io.*;
 
-public class Filesystem {
+public class FileWriter {
 
     private static String fileDestination = System.getProperty("user.dir") + "/Files/";
 
@@ -23,7 +23,7 @@ public class Filesystem {
     }
 
     public static void writeToFile(File file, String content, boolean shouldAppend) throws IOException {
-        FileWriter fw = new FileWriter(file.getAbsoluteFile(), shouldAppend);
+        java.io.FileWriter fw = new java.io.FileWriter(file.getAbsoluteFile(), shouldAppend);
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(content);
         bw.close();
