@@ -17,13 +17,13 @@ import java.io.IOException;
 import java.util.*;
 
 import static Search.Indexer.invertedIndex;
-import static Search.Search.search;
+import static Search.Searcher.searchHandler;
 import static Search.SimilarWords.retrieveSimilarWords;
 
 public class GUI extends Application {
 //TODO sort this code
 
-    //Indexes the specified website and launches the search window
+    //Indexes the specified website and launches the searchHandler window
     public static void main(String[] args) throws IOException {
 
         Indexer.index("mmuSiteTest1000.txt");
@@ -35,30 +35,40 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-
         List<Hyperlink> links = new ArrayList<>();
+
+        // Anchor pane used to anchore child noeds
         AnchorPane pane = new AnchorPane();
+        // Vbox used for the search bar since I want the Search button and input field together
         VBox vBox = new VBox();
-
-        for(final Hyperlink hyperlink : links) {
-            hyperlink.setOnAction(t -> getHostServices().showDocument(hyperlink.getText()));
-        }
-
+        // HBox used here for the results window so that it sizes correctly
         HBox hBox = new HBox();
+
         final TextField searchField = new TextField();
+
         Button b = new Button("Search");
+
+
+        //TODO if problems, add this back
+        //for(final Hyperlink hyperlink : links) {
+            //hyperlink.setOnAction(t -> getHostServices().showDocument(hyperlink.getText()));
+       // }
 
         hBox.getChildren().addAll(b, searchField);
 
         b.setOnAction(t -> {
-            // gets the current system time so we can see how long the search has taken
+            // gets the current system time so we can see how long the searchHandler has taken
             long start = System.currentTimeMillis();
-            links.clear();
+
+            //TODO if problems add this back
+            //links.clear();
+
+
             listView.getItems().clear();
 
             String searchQuery = searchField.getText();
 
-            HashSet searchResults = search(searchQuery, invertedIndex);
+            HashSet searchResults = searchHandler(searchQuery, invertedIndex);
 
 
             if (searchResults != null) {
@@ -73,7 +83,10 @@ public class GUI extends Application {
                     Map.Entry pair = (Map.Entry) it.next();
                     String result2 = (pair.getValue().toString());
 
-                    Hyperlink link = new Hyperlink(result2);
+                    //TODO if problems add this back
+                    //Hyperlink link = new Hyperlink(result2);
+
+
                     //links.add(link);
                     addLink(result2);
 
@@ -90,7 +103,7 @@ public class GUI extends Application {
                 // Appends the total time taken and number of results searched to the top of the list
                 listView.getItems().add(0, numberOfLinks + " results found in " + time + " millisecond(s)."); //
 
-                // Clears the search field for the next Search
+                // Clears the searchHandler field for the next Search
                 searchField.clear();
 
             }
@@ -113,6 +126,8 @@ public class GUI extends Application {
         vBox.getChildren().add(listView);
 
         pane.getChildren().add(vBox);
+
+        //Scene is set with the AnchorPane values
         Scene scene = new Scene(pane, 700, 800);
         primaryStage.setTitle("Intelligent Search Engine:");
         primaryStage.setScene(scene);

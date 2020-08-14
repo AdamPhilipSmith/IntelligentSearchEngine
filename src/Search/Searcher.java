@@ -1,0 +1,97 @@
+package Search;
+
+import java.util.HashMap;
+import java.util.HashSet;
+
+public class Searcher {
+    //TODO might need this here: private Searcher() {}
+
+    //TODO code fixed but needs going over
+
+
+    public static HashSet<String> searchHandler(String searchedTerms, HashMap hashMap) {
+
+        // coverts searchedTerms to all lower case (means when searching all words will be picked up regardless of case)
+        String queryUpperCase = searchedTerms.toUpperCase();
+
+        String[] splitTerms = queryUpperCase.split(" ");
+
+        //Returns null if no words are found
+        if (queryUpperCase.length() == 0) {
+            return null;
+        }
+
+        // Checks to see if 'OR' has been used. If 'OR' is not entered, 'AND' is assumed since that is what a user would probably want
+        if (splitTerms.length == 3) {
+
+            if (splitTerms[1].equals("OR")) {
+
+                return orSearch(splitTerms, hashMap);
+            }
+
+        }
+
+        return andSearch(splitTerms, hashMap);
+
+    }
+    //TODO 'OR' searchHandler still doesn't work properly. Breaks searches done afterwards
+    //Checks the results from both words specified by 'OR' and combines the searchHandler results.
+    public static HashSet<String> orSearch(String[] splitTerms, HashMap hashMap) {
+
+        //Clone made of each result and those are then combined, otherwise problems occur
+        HashSet<String> firstWordResults = (HashSet) hashMap.get(splitTerms[0]);
+        HashSet<String> firstWordResultsClone = (HashSet<String>) firstWordResults.clone();
+
+        HashSet<String> secondWordResults = (HashSet) hashMap.get(splitTerms[2]);
+        HashSet<String> secondWordResultsClone = (HashSet<String>) secondWordResults.clone();
+
+        if (firstWordResults == null && secondWordResults == null) {
+
+            return null;
+        }
+
+        if (firstWordResults == null) {
+
+            return secondWordResults;
+        }
+
+        if (secondWordResults == null) {
+
+            return firstWordResults;
+        }
+
+        firstWordResultsClone.addAll(secondWordResultsClone);
+
+        return firstWordResultsClone;
+    }
+    //TODO add unfound words to an array so we can use Similar Words on all of them
+    public static HashSet<String> andSearch(String[] splitTerms, HashMap hashMap) {
+
+
+        HashSet<String> results = (HashSet) hashMap.get(splitTerms[0]);
+
+        if (results == null) {
+            return null;
+        }
+
+        //Clone needed here, otherwise original hashMap is affected during searchHandler
+        HashSet<String> resultsClone = (HashSet<String>) results.clone();
+
+        for (int i = 0; i < splitTerms.length; i++) {
+
+            HashSet<String> nextWordResults = (HashSet) hashMap.get(splitTerms[i]);
+
+            if (nextWordResults == null) {
+                return null;
+            }
+
+            resultsClone.retainAll(nextWordResults);
+
+        }
+
+        return resultsClone;
+    }
+
+}
+
+

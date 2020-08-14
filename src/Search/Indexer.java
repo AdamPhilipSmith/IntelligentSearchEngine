@@ -45,7 +45,7 @@ public class Indexer {
                 if (word == null) {
                     break;
                 }
-
+                //TODO change page to URL below and also in crawler and re-crawl
                 //checks if the word is a URL. If so, sets the URL and continues on to the next word
                 if (word.startsWith("*PAGE:")) {
 
@@ -111,7 +111,7 @@ public class Indexer {
 
         } else {
 
-            //TODO might cause problems ebing commented out
+            //TODO might cause problems being commented out
             //if (urlHashSet.contains(url)) {
                // urlHashSet.add(url);
            // }

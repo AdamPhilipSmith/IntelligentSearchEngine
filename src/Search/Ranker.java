@@ -47,18 +47,18 @@ public class Ranker {
 
     }
 
-    //Determines the tf-idf for all websites returned in the search results, combining their scores for each word, ranking them and then returning them in descending order
+    //Determines the tf-idf for all websites returned in the searchHandler results, combining their scores for each word, ranking them and then returning them in descending order
     public static Map<Double, String> rankResults(HashSet searchResults, String searchedWords) {
 
         Map<Double, String> sortedURLs = new HashMap<Double, String>();
 
-        // Separates the different words from the search term
+        // Separates the different words from the searchHandler term
         String[] splitWords = searchedWords.split(" ");
 
         //Tree map used since it will automatically sort the results by the key
         TreeMap<Double, String> rankedURLs = new TreeMap<>();
 
-        //TODO this breaks 'OR' search
+        //TODO this breaks 'OR' searchHandler remove the 'OR'
         if (searchResults != null) {
             for (Object url : searchResults) {
                 List<String> words2 = (List<String>) forwardIndex.get(url);
