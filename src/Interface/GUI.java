@@ -35,13 +35,13 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        List<Hyperlink> links = new ArrayList<>();
+        //List<Hyperlink> links = new ArrayList<>();
 
-        // Anchor pane used to anchore child noeds
+        // Anchor pane used to anchor child nodes
         AnchorPane pane = new AnchorPane();
         // Vbox used for the search bar since I want the Search button and input field together
         VBox vBox = new VBox();
-        // HBox used here for the results window so that it sizes correctly
+
         HBox hBox = new HBox();
 
         final TextField searchField = new TextField();
@@ -54,7 +54,22 @@ public class GUI extends Application {
             //hyperlink.setOnAction(t -> getHostServices().showDocument(hyperlink.getText()));
        // }
 
+        // HBox used here since I want the Search button and input field together
         hBox.getChildren().addAll(b, searchField);
+        // Vbox used for the REST SINCE i WANT IT ALL DISPLAYED VERTICALLY
+        vBox.getChildren().add(hBox);
+
+        listView.setPrefWidth(700);
+        listView.setPrefHeight(800);
+        vBox.getChildren().add(listView);
+
+        pane.getChildren().add(vBox);
+
+        //Scene is set with the AnchorPane values
+        Scene scene = new Scene(pane, 700, 800);
+        primaryStage.setTitle("Intelligent Search Engine:");
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
         b.setOnAction(t -> {
             // gets the current system time so we can see how long the searchHandler has taken
@@ -94,11 +109,12 @@ public class GUI extends Application {
 
                     it.remove(); // avoids a ConcurrentModificationException
                 }
-                // Gets the system time once the process is completed, takes the start time away from it to determine total time
-                long time = ((System.currentTimeMillis() - start));
 
                 // Adds all the links to the list view
-                listView.getItems().addAll(links);
+                //listView.getItems().addAll(links);
+
+                // Gets the system time once the process is completed, takes the start time away from it to determine total time
+                long time = ((System.currentTimeMillis() - start));
 
                 // Appends the total time taken and number of results searched to the top of the list
                 listView.getItems().add(0, numberOfLinks + " results found in " + time + " millisecond(s)."); //
@@ -119,19 +135,7 @@ public class GUI extends Application {
             }
 
         });
-        vBox.getChildren().add(hBox);
 
-        listView.setPrefWidth(700);
-        listView.setPrefHeight(800);
-        vBox.getChildren().add(listView);
-
-        pane.getChildren().add(vBox);
-
-        //Scene is set with the AnchorPane values
-        Scene scene = new Scene(pane, 700, 800);
-        primaryStage.setTitle("Intelligent Search Engine:");
-        primaryStage.setScene(scene);
-        primaryStage.show();
 
     }
 
