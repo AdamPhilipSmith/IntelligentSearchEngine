@@ -78,12 +78,12 @@ public class GUI extends Application {
             String searchQuery = searchField.getText();
 
             HashSet searchResults = searchHandler(searchQuery, invertedIndex);
-
+            //TODO Talk about this in writeup
             if (searchResults != null) {
                 // ranks the results
                 Map<Double, String> sortedURLs = Ranker.rankResults(searchResults, searchQuery);
 
-                String result3 = "";
+
                 int numberOfLinks = 0;
 
                 Iterator it = sortedURLs.entrySet().iterator();
@@ -95,7 +95,8 @@ public class GUI extends Application {
 
                     numberOfLinks++;
 
-                    it.remove(); // avoids a ConcurrentModificationException
+                    //TODO maybe remove this
+                    //it.remove(); // avoids a ConcurrentModificationException
                 }
 
                 // Gets the system time once the process is completed, takes the start time away from it to determine total time
