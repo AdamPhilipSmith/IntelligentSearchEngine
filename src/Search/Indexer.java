@@ -45,22 +45,21 @@ public class Indexer {
                 if (word == null) {
                     break;
                 }
-                //TODO change page to URL below and also in crawler and re-crawl
+
                 //checks if the word is a URL. If so, sets the URL and continues on to the next word
                 if (word.startsWith("*PAGE:")) {
 
                     //Sets the URL as the text following "*PAGE:"
                     Url = word.substring(6);
 
-                    // Removes the occasional time a website still has extra text after its URL for some reason. //TODO Maybe mention this in write up maybe (had problems and fixed them.)
-                    String[] _arr = Url.split("\\s");
-                    Url = _arr[0];
+                    // Removes the occasional time a website still has extra text after its URL for some reason.
+                    String[] array = Url.split("\\s");
+                    Url = array[0];
 
-                    // Gets rid of the "/" at the end of some URL's preventing duplicate results.//TODO same as above
+                    // Gets rid of the "/" at the end of some URL's preventing duplicate results.
                     if (Url.substring(Url.length() - 1).equals("/")) {
                         Url = Url.substring(0, Url.length() - 1);
                     }
-
 
                     continue;
                 }
@@ -69,9 +68,11 @@ public class Indexer {
                     continue;
                 }
 
-                // Gets rid of the punctuation at the end of some words, meaning they were not being picked up in the Search //TODO same as above
+                // Gets rid of the punctuation at the end of some words, meaning they were not being picked up in the Search
                 if (word.length() > 1) {
-                    if (word.substring(word.length() - 1).equals(".") || word.substring(word.length() - 1).equals(",") || word.substring(word.length() - 1).equals("!") || word.substring(word.length() - 1).equals("?")) {
+                    if (word.substring(word.length() - 1).equals(".") || word.substring(word.length() - 1).equals(",")
+                            || word.substring(word.length() - 1).equals("!") || word.substring(word.length() - 1).equals("?")) {
+
                         word = word.substring(0, word.length() - 1);
                     }
                 }
@@ -79,11 +80,14 @@ public class Indexer {
                 // coverts word to all upper case (means when searching all words will be picked up regardless of case)
                 String wordUpperCase = word.toUpperCase();
 
-                //if (!wordUpperCase.equals("THE") && !wordUpperCase.equals("IS") && !wordUpperCase.equals("AT") && !wordUpperCase.equals("ON") && !wordUpperCase.equals("WHICH")){ // checks the word is not a 'stop word'. If so, it adds it. //TODO might get rid of this, discuss why and which words to use in project. //TODO doesn't work for some reason
+                //Make sure stop words are not added to the indeces.
+                if (!wordUpperCase.equals("THE") && !wordUpperCase.equals("IS") && !wordUpperCase.equals("AT")
+                        && !wordUpperCase.equals("ON") && !wordUpperCase.equals("WHICH")) {
 
-                addToInvertedIndex(invertedIndex, wordUpperCase, Url); //adds the word to the Hashmap with the corresponding Url.
-                addToForwardIndex(Url, word);
-                //}
+                    // adds the word and corresponding URL to both indices
+                    addToInvertedIndex(wordUpperCase, Url);
+                    addToForwardIndex(Url, wordUpperCase);
+                }
 
             }
             file.close();
@@ -97,31 +101,26 @@ public class Indexer {
        // return invertedIndex;
    // }
 
-    // Adds searched word as key and url as a value of the hashmap. Checks for duplicates only adding new Url if previous doesn't exist.
-    public static void addToInvertedIndex(HashMap hashMap, String word, String url) {
+    // Adds searched word as key and url as a value of the hashmap. Checks for duplicates
+    // only adding new Url if previous doesn't exist.
+    private static void addToInvertedIndex(String word, String url) {
 
-        HashSet<String> urlHashSet = (HashSet) hashMap.get(word);
+        HashSet<String> urlHashSet = (HashSet) invertedIndex.get(word);
 
         //Checks to see if this Url has already been added for this word.
         if (urlHashSet == null) {
 
             HashSet<String> hashSet = new HashSet<String>();
             hashSet.add(url);
-            hashMap.put(word, hashSet);
+            invertedIndex.put(word, hashSet);
 
         } else {
-
-            //TODO might cause problems being commented out
-            //if (urlHashSet.contains(url)) {
-               // urlHashSet.add(url);
-           // }
             urlHashSet.add(url);
-
         }
     }
 
     // Adds url as key and searched word as a value of the hashmap.
-    public static void addToForwardIndex(String url, String word) {
+    private static void addToForwardIndex(String url, String word) {
 
 
         ArrayList temp;
@@ -132,16 +131,13 @@ public class Indexer {
             temp.add(word);
 
         }
-        //If the URL hasn't been added, a new ArrayList is created with the word and the URL is added to the map with the new ArrayList
+        //If the URL hasn't been added, a new ArrayList is created with the word and the URL
+        // is added to the map with the new ArrayList
         else {
 
            ArrayList temp2 = new ArrayList();
             temp2.add(word);
             temp = temp2;
-
-            //TODO uncomment this code if any problems
-            //forwardIndex.put(url, temp2);
-
         }
 
         forwardIndex.put(url, temp);

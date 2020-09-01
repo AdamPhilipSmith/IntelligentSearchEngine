@@ -35,11 +35,10 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        //List<Hyperlink> links = new ArrayList<>();
 
         // Anchor pane used to anchor child nodes
         AnchorPane pane = new AnchorPane();
-        // Vbox used for the search bar since I want the Search button and input field together
+
         VBox vBox = new VBox();
 
         HBox hBox = new HBox();
@@ -48,43 +47,37 @@ public class GUI extends Application {
 
         Button b = new Button("Search");
 
-
-        //TODO if problems, add this back
-        //for(final Hyperlink hyperlink : links) {
-            //hyperlink.setOnAction(t -> getHostServices().showDocument(hyperlink.getText()));
-       // }
-
-        // HBox used here since I want the Search button and input field together
+        // HBox used here since I want the Search button and input field together horizontally
         hBox.getChildren().addAll(b, searchField);
-        // Vbox used for the REST SINCE i WANT IT ALL DISPLAYED VERTICALLY
+        // Vbox used to add HBox. VBox used here because I want the items aligned vertically
         vBox.getChildren().add(hBox);
 
+        //size of the results window set
         listView.setPrefWidth(700);
         listView.setPrefHeight(800);
         vBox.getChildren().add(listView);
 
         pane.getChildren().add(vBox);
 
-        //Scene is set with the AnchorPane values
-        Scene scene = new Scene(pane, 700, 800);
+        //Scene is set with the AnchorPane values but I had to add a little to length
+        // otherwise the view wasn't contained
+        Scene scene = new Scene(pane, 700, 825);
         primaryStage.setTitle("Intelligent Search Engine:");
         primaryStage.setScene(scene);
+
+        //displays the windows and buttons to the user
         primaryStage.show();
 
+        // sets all the code for
         b.setOnAction(t -> {
-            // gets the current system time so we can see how long the searchHandler has taken
+            // gets the current system time so we can see how long the search has taken
             long start = System.currentTimeMillis();
-
-            //TODO if problems add this back
-            //links.clear();
-
 
             listView.getItems().clear();
 
             String searchQuery = searchField.getText();
 
             HashSet searchResults = searchHandler(searchQuery, invertedIndex);
-
 
             if (searchResults != null) {
                 // ranks the results
@@ -98,20 +91,12 @@ public class GUI extends Application {
                     Map.Entry pair = (Map.Entry) it.next();
                     String result2 = (pair.getValue().toString());
 
-                    //TODO if problems add this back
-                    //Hyperlink link = new Hyperlink(result2);
-
-
-                    //links.add(link);
                     addLink(result2);
 
                     numberOfLinks++;
 
                     it.remove(); // avoids a ConcurrentModificationException
                 }
-
-                // Adds all the links to the list view
-                //listView.getItems().addAll(links);
 
                 // Gets the system time once the process is completed, takes the start time away from it to determine total time
                 long time = ((System.currentTimeMillis() - start));

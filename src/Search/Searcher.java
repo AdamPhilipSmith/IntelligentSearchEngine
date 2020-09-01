@@ -11,7 +11,8 @@ public class Searcher {
 
     public static HashSet<String> searchHandler(String searchedTerms, HashMap hashMap) {
 
-        // coverts searchedTerms to all lower case (means when searching all words will be picked up regardless of case)
+        // coverts searchedTerms to all lower case (means when searching all words will be
+        // picked up regardless of case)
         String queryUpperCase = searchedTerms.toUpperCase();
 
         String[] splitTerms = queryUpperCase.split(" ");
@@ -21,7 +22,8 @@ public class Searcher {
             return null;
         }
 
-        // Checks to see if 'OR' has been used. If 'OR' is not entered, 'AND' is assumed since that is what a user would probably want
+        // Checks to see if 'OR' has been used. If 'OR' is not entered, 'AND' is assumed since
+        // that is what a user would probably want
         if (splitTerms.length == 3) {
 
             if (splitTerms[1].equals("OR")) {
@@ -34,9 +36,9 @@ public class Searcher {
         return andSearch(splitTerms, hashMap);
 
     }
-    //TODO 'OR' searchHandler still doesn't work properly. Breaks searches done afterwards
+
     //Checks the results from both words specified by 'OR' and combines the searchHandler results.
-    public static HashSet<String> orSearch(String[] splitTerms, HashMap hashMap) {
+    private static HashSet<String> orSearch(String[] splitTerms, HashMap hashMap) {
 
         //Clone made of each result and those are then combined, otherwise problems occur
         HashSet<String> firstWordResults = (HashSet) hashMap.get(splitTerms[0]);
@@ -64,8 +66,8 @@ public class Searcher {
 
         return firstWordResultsClone;
     }
-    //TODO add unfound words to an array so we can use Similar Words on all of them
-    public static HashSet<String> andSearch(String[] splitTerms, HashMap hashMap) {
+
+    private static HashSet<String> andSearch(String[] splitTerms, HashMap hashMap) {
 
 
         HashSet<String> results = (HashSet) hashMap.get(splitTerms[0]);
