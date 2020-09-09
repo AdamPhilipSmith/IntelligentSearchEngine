@@ -40,12 +40,23 @@ public class Searcher {
     //Checks the results from both words specified by 'OR' and combines the searchHandler results.
     private static HashSet<String> orSearch(String[] splitTerms, HashMap hashMap) {
 
+        HashSet<String> firstWordResultsClone = null;
+        HashSet<String> secondWordResultsClone = null;
+
         //Clone made of each result and those are then combined, otherwise problems occur
         HashSet<String> firstWordResults = (HashSet) hashMap.get(splitTerms[0]);
-        HashSet<String> firstWordResultsClone = (HashSet<String>) firstWordResults.clone();
+        if (!(firstWordResults == null)) {
+            firstWordResultsClone = (HashSet<String>) firstWordResults.clone();
+            System.out.println(firstWordResults);
+            System.out.println(firstWordResultsClone);
+        }
+
 
         HashSet<String> secondWordResults = (HashSet) hashMap.get(splitTerms[2]);
-        HashSet<String> secondWordResultsClone = (HashSet<String>) secondWordResults.clone();
+        if (!(secondWordResults == null)) {
+            secondWordResultsClone = (HashSet<String>) secondWordResults.clone();
+        }
+
 
         if (firstWordResults == null && secondWordResults == null) {
 
@@ -54,12 +65,12 @@ public class Searcher {
 
         if (firstWordResults == null) {
 
-            return secondWordResults;
+            return secondWordResultsClone;
         }
 
         if (secondWordResults == null) {
 
-            return firstWordResults;
+            return firstWordResultsClone;
         }
 
         firstWordResultsClone.addAll(secondWordResultsClone);

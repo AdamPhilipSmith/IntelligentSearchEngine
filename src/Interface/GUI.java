@@ -14,11 +14,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 
 import static Search.Indexer.invertedIndex;
 import static Search.Searcher.searchHandler;
-import static Search.SimilarWords.retrieveSimilarWords;
 
 public class GUI extends Application {
 //TODO sort this code
@@ -60,7 +61,7 @@ public class GUI extends Application {
         pane.getChildren().add(vBox);
 
         //Scene is set with the AnchorPane values but I had to add a little to length
-        // otherwise the view wasn't contained
+        // to accommodate the HBox
         Scene scene = new Scene(pane, 700, 825);
         primaryStage.setTitle("Intelligent Search Engine:");
         primaryStage.setScene(scene);
@@ -68,21 +69,21 @@ public class GUI extends Application {
         //displays the windows and buttons to the user
         primaryStage.show();
 
-        // sets all the code for
+        // sets all the code to be run once the Search button is pressed
         b.setOnAction(t -> {
             // gets the current system time so we can see how long the search has taken
             long start = System.currentTimeMillis();
-
+            // clears the list view ready for new search
             listView.getItems().clear();
 
             String searchQuery = searchField.getText();
 
+            // the searchHandler method to conduct the search
             HashSet searchResults = searchHandler(searchQuery, invertedIndex);
-            //TODO Talk about this in writeup
+
             if (searchResults != null) {
                 // ranks the results
                 Map<Double, String> sortedURLs = Ranker.rankResults(searchResults, searchQuery);
-
 
                 int numberOfLinks = 0;
 
@@ -95,42 +96,39 @@ public class GUI extends Application {
 
                     numberOfLinks++;
 
-                    //TODO maybe remove this
-                    //it.remove(); // avoids a ConcurrentModificationException
                 }
-
-                // Gets the system time once the process is completed, takes the start time away from it to determine total time
+                // Gets the system time once the process is completed,
+                // takes the start time away from it to determine total time
                 long time = ((System.currentTimeMillis() - start));
 
                 // Appends the total time taken and number of results searched to the top of the list
-                listView.getItems().add(0, numberOfLinks + " results found in " + time + " millisecond(s)."); //
+                listView.getItems().add(0, numberOfLinks + " results found for \"" + searchQuery
+                        + "\". It took me " + time + " millisecond(s).");
 
                 // Clears the searchHandler field for the next Search
                 searchField.clear();
 
             }
-            //If no words are found, prints list of similar words
+            //If no words are found, advises the user
             else {
-                if ((!retrieveSimilarWords(invertedIndex, searchQuery).isEmpty())) {
-                    listView.getItems().add(0, "No results found for this word/s. Did you mean one of the following, similar word/s:,");
-                    listView.getItems().add(1, retrieveSimilarWords(invertedIndex, searchQuery));
+                String[] splitTerms = searchQuery.split(" ");
+                if(splitTerms.length > 1){
+                    listView.getItems().add(0, "No results found for these words.");
                 }
-                else{
-                    listView.getItems().add(0, "No results found for this word/s and no similar words could be found.");
+                else {
+                    listView.getItems().add(0, "No results found for this word.");
                 }
             }
 
         });
 
-
     }
 
     private void addLink(final String url) {
         final Hyperlink link = new Hyperlink(url);
+
         link.setOnAction(t -> {
-
             getHostServices().showDocument(link.getText());
-
         });
 
         listView.getItems().add(link);
