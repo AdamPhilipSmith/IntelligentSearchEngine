@@ -40,39 +40,30 @@ public class Searcher {
     //Checks the results from both words specified by 'OR' and combines the searchHandler results.
     private static HashSet<String> orSearch(String[] splitTerms, HashMap hashMap) {
 
-        HashSet<String> firstWordResultsClone = null;
-        HashSet<String> secondWordResultsClone = null;
 
         //Clone made of each result and those are then combined, otherwise problems occur
         HashSet<String> firstWordResults = (HashSet) hashMap.get(splitTerms[0]);
-        if (!(firstWordResults == null)) {
-            firstWordResultsClone = (HashSet<String>) firstWordResults.clone();
-            System.out.println(firstWordResults);
-            System.out.println(firstWordResultsClone);
-        }
 
 
         HashSet<String> secondWordResults = (HashSet) hashMap.get(splitTerms[2]);
-        if (!(secondWordResults == null)) {
-            secondWordResultsClone = (HashSet<String>) secondWordResults.clone();
-        }
 
 
         if (firstWordResults == null && secondWordResults == null) {
-
             return null;
         }
 
         if (firstWordResults == null) {
-
-            return secondWordResultsClone;
+            return secondWordResults;
         }
 
         if (secondWordResults == null) {
-
-            return firstWordResultsClone;
+            return firstWordResults;
         }
 
+        HashSet<String> firstWordResultsClone = (HashSet<String>) firstWordResults.clone();
+        //System.out.println(firstWordResultsClone);
+        HashSet<String> secondWordResultsClone = (HashSet<String>) secondWordResults.clone();
+       //System.out.println(secondWordResultsClone);
         firstWordResultsClone.addAll(secondWordResultsClone);
 
         return firstWordResultsClone;
@@ -97,7 +88,7 @@ public class Searcher {
             if (nextWordResults == null) {
                 return null;
             }
-
+            //Only keeps the results that match the new results
             resultsClone.retainAll(nextWordResults);
 
         }

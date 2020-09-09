@@ -91,7 +91,6 @@ public class GUI extends Application {
                 while (it.hasNext()) {
                     Map.Entry pair = (Map.Entry) it.next();
                     String result2 = (pair.getValue().toString());
-
                     addLink(result2);
 
                     numberOfLinks++;
@@ -107,6 +106,8 @@ public class GUI extends Application {
 
                 // Clears the searchHandler field for the next Search
                 searchField.clear();
+
+
 
             }
             //If no words are found, advises the user

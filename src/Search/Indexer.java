@@ -14,7 +14,7 @@ public class Indexer {
     //TODO try to make these not public
 
     public static HashMap invertedIndex;
-    static HashMap forwardIndex;
+    public static HashMap forwardIndex;
 
     //private Indexer(){}
 
@@ -80,14 +80,11 @@ public class Indexer {
                 // coverts word to all upper case (means when searching all words will be picked up regardless of case)
                 String wordUpperCase = word.toUpperCase();
 
-                //Make sure stop words are not added to the indeces.
-                if (!wordUpperCase.equals("THE") && !wordUpperCase.equals("IS") && !wordUpperCase.equals("AT")
-                        && !wordUpperCase.equals("ON") && !wordUpperCase.equals("WHICH")) {
 
                     // adds the word and corresponding URL to both indices
                     addToInvertedIndex(wordUpperCase, Url);
                     addToForwardIndex(Url, wordUpperCase);
-                }
+
 
             }
             file.close();

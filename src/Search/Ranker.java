@@ -59,13 +59,18 @@ public class Ranker {
             for (Object url : searchResults) {
                 List<String> words2 = (List<String>) forwardIndex.get(url);
                 double rank = 0;
+
                 //Goes through each of the searched terms for each website, getting the Tf IDF rank
                 // to get a combined TF IDF score for each site
                 for (int i = 0; i < splitWords.length; i++) {
-                    //Breaks iteration of loop if the word being checked is 'OR'
-                    if (splitWords[i] == "OR"){
+
+                    //Breaks iteration of loop if the word being checked is the 'OR' operator or is a stop word so that
+                    // it doesnt affect the ranking
+                    if (splitWords[i].equals("OR")  || splitWords[i].equals("THE") || splitWords[i].equals("IS")
+                            || splitWords[i].equals("AT") || splitWords[i].equals("ON") || splitWords[i].equals("WHICH")){
                         continue;
                     }
+
                     rank += tfIdf(words2, forwardIndex, splitWords[i]);
 
                 }
@@ -78,6 +83,7 @@ public class Ranker {
             sortedURLs = rankedURLs.descendingMap();
 
         }
+
         System.out.println(sortedURLs);
         return sortedURLs;
     }
