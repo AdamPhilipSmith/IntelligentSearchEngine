@@ -27,8 +27,9 @@ public class Searcher {
         if (splitTerms.length == 3) {
 
             if (splitTerms[1].equals("OR")) {
-
+                System.out.println(orSearch(splitTerms, hashMap));
                 return orSearch(splitTerms, hashMap);
+
             }
 
         }
@@ -41,7 +42,6 @@ public class Searcher {
     private static HashSet<String> orSearch(String[] splitTerms, HashMap hashMap) {
 
 
-        //Clone made of each result and those are then combined, otherwise problems occur
         HashSet<String> firstWordResults = (HashSet) hashMap.get(splitTerms[0]);
 
 
@@ -57,9 +57,10 @@ public class Searcher {
         }
 
         if (secondWordResults == null) {
+            System.out.println(firstWordResults);
             return firstWordResults;
         }
-
+        //Clone made of each result and those are then combined, otherwise problems occur
         HashSet<String> firstWordResultsClone = (HashSet<String>) firstWordResults.clone();
         //System.out.println(firstWordResultsClone);
         HashSet<String> secondWordResultsClone = (HashSet<String>) secondWordResults.clone();

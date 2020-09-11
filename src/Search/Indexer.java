@@ -87,6 +87,7 @@ public class Indexer {
 
 
             }
+            System.out.println(forwardIndex.size());
             file.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

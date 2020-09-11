@@ -14,6 +14,7 @@ public class Ranker {
             if (searchedWord.equalsIgnoreCase(word))
                 result++;
         }
+        //System.out.println("TF= " + result / page.size());
         return result / page.size();
     }
 
@@ -34,11 +35,21 @@ public class Ranker {
             }
         }
 
-        return Math.log10(indexedSite.size() / n);
+        double preLogIdf = indexedSite.size() / n;
+
+        if (preLogIdf == 1.0){
+
+            preLogIdf += 0.000000000000001;
+
+        }
+
+        return Math.log10(preLogIdf);
+
     }
     // Multiplies the tf and the idf to give a tf-idf rating
     public static double tfIdf(List<String> page, HashMap<String, ArrayList<String>> indexedSite, String term) {
 
+        //System.out.println("tfidf = " + tf(page, term) * idf(indexedSite, term));
         return tf(page, term) * idf(indexedSite, term);
 
     }
@@ -54,14 +65,14 @@ public class Ranker {
 
         //Tree map used since it will automatically sort the results by the key
         TreeMap<Double, String> rankedURLs = new TreeMap<>();
-
+        //System.out.println("rankeResults" + searchResults);
         if (searchResults != null) {
             for (Object url : searchResults) {
                 List<String> words2 = (List<String>) forwardIndex.get(url);
                 double rank = 0;
 
                 //Goes through each of the searched terms for each website, getting the Tf IDF rank
-                // to get a combined TF IDF score for each site
+                // to get a combined TF IDF score for each page
                 for (int i = 0; i < splitWords.length; i++) {
 
                     //Breaks iteration of loop if the word being checked is the 'OR' operator or is a stop word so that
@@ -70,13 +81,21 @@ public class Ranker {
                             || splitWords[i].equals("AT") || splitWords[i].equals("ON") || splitWords[i].equals("WHICH")){
                         continue;
                     }
-
-                    rank += tfIdf(words2, forwardIndex, splitWords[i]);
+                    double numberCheck = tfIdf(words2, forwardIndex, splitWords[i]);
+                    if (!Double.isNaN(numberCheck)) {
+                        rank += tfIdf(words2, forwardIndex, splitWords[i]);
+                    }
 
                 }
                 String stringURL = url.toString();
-
+                //System.out.println("looped");
+                //TODO maybe remove this
+                if (rankedURLs.containsKey(rank)){
+                    rank += 0.000000000000000001;
+                    //System.out.println("contains test");
+                }
                 rankedURLs.put(rank, stringURL);
+                //System.out.println(rankedURLs);
             }
             //Since the results are ordered lowest to highest, the list needs to be reversed to
             // get the best results at the top

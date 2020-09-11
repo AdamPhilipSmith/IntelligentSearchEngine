@@ -81,10 +81,10 @@ public class GUI extends Application {
             // the searchHandler method to conduct the search
             HashSet searchResults = searchHandler(searchQuery, invertedIndex);
 
-            if (searchResults != null) {
+            if (searchResults != null && !searchResults.isEmpty()) {
                 // ranks the results
                 Map<Double, String> sortedURLs = Ranker.rankResults(searchResults, searchQuery);
-
+                System.out.println(sortedURLs);
                 int numberOfLinks = 0;
 
                 Iterator it = sortedURLs.entrySet().iterator();
