@@ -11,7 +11,6 @@ import java.util.HashSet;
 public class Indexer {
     //TODO code fixed but might be worth another check
 
-    //TODO try to make these not public
 
     public static HashMap invertedIndex;
     public static HashMap forwardIndex;
