@@ -57,14 +57,14 @@ public class Searcher {
         }
 
         if (secondWordResults == null) {
-            System.out.println(firstWordResults);
             return firstWordResults;
         }
+
         //Clone made of each result and those are then combined, otherwise problems occur
         HashSet<String> firstWordResultsClone = (HashSet<String>) firstWordResults.clone();
-        //System.out.println(firstWordResultsClone);
+
         HashSet<String> secondWordResultsClone = (HashSet<String>) secondWordResults.clone();
-       //System.out.println(secondWordResultsClone);
+
         firstWordResultsClone.addAll(secondWordResultsClone);
 
         return firstWordResultsClone;
